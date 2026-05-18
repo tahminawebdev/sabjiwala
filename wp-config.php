@@ -76,7 +76,10 @@ define( 'WP_HOME', $wp_home );
 define( 'WP_SITEURL', $wp_siteurl );
 
 define( 'WP_DEBUG', filter_var( shobjiwala_env( 'WP_DEBUG', 'false' ), FILTER_VALIDATE_BOOLEAN ) );
-define( 'WP_DEBUG_LOG', true );
+// Do not write debug output to wp-content/debug.log (was web-readable).
+// PHP errors still flow through Apache to docker logs; read with
+// `docker compose logs -f wordpress`.
+define( 'WP_DEBUG_LOG', false );
 define( 'WP_DEBUG_DISPLAY', false );
 define( 'SCRIPT_DEBUG', false );
 

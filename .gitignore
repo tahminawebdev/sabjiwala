@@ -15,9 +15,11 @@
 /wp-content/uploads/*
 !/wp-content/uploads/.gitkeep
 
-# Mu-plugins composer-managed
+# Mu-plugins: composer-managed contents are ignored, but our hand-written
+# security plugin is tracked.
 /wp-content/mu-plugins/*
 !/wp-content/mu-plugins/.gitkeep
+!/wp-content/mu-plugins/shobjiwala-security.php
 
 # WP core managed by docker image
 /wp/
@@ -32,6 +34,11 @@ readme.html
 
 # Default themes shipped by the WordPress docker image (not project assets)
 /wp-content/themes/twentytwenty*/
+
+# PHPCS caches
+.phpcs-cache
+.phpcs-security-cache
+.phpcs-security-vendor-cache
 
 # Local DB persistence
 /db/data/
