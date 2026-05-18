@@ -137,11 +137,13 @@ Installed via composer:
 - google-analytics-for-wordpress (MonsterInsights)
 - image-optimization
 - jetpack
+- limit-login-attempts-reloaded (login throttling — added by the 2026-05-18 security review, M8)
 - mailchimp-for-wp
 - one-click-demo-import
 - optinmonster
 - redis-cache (used by the prod stack — activate via `wp plugin activate redis-cache` after the prod overlay is up)
 - svg-support
+- two-factor (TOTP / backup codes — added by the 2026-05-18 security review, M8; users enroll from their profile)
 - woo-smart-quick-view
 - woo-smart-wishlist
 - woo-variation-swatches
