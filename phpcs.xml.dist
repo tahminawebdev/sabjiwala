@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<ruleset name="Shobjiwala">
+    <description>WordPress coding standards for code we own (wp-config + child theme + mu-plugins).</description>
+
+    <!--
+        Scope: code we wrote or modified.
+        The parent Groser theme is third-party (ThemeForest) and is excluded from this strict
+        ruleset; security-relevant sniffs still run against it via phpcs-security.xml.dist.
+    -->
+    <file>wp-config.php</file>
+    <file>wp-content/themes/groser-child/</file>
+    <file>wp-content/mu-plugins/</file>
+
+    <exclude-pattern>*/vendor/*</exclude-pattern>
+    <exclude-pattern>*/node_modules/*</exclude-pattern>
+    <exclude-pattern>wp-content/plugins/*</exclude-pattern>
+    <exclude-pattern>wp-content/themes/twentytwenty*/*</exclude-pattern>
+    <exclude-pattern>wp-content/themes/groser/*</exclude-pattern>
+    <exclude-pattern>*.min.js</exclude-pattern>
+
+    <arg name="extensions" value="php"/>
+    <arg name="parallel" value="8"/>
+    <arg name="cache" value=".phpcs-cache"/>
+    <arg name="colors"/>
+    <arg value="sp"/>
+
+    <rule ref="WordPress-Extra">
+        <!-- Theme filename pattern; WPCS expects e.g. class-foo.php — not worth a rename. -->
+        <exclude name="WordPress.Files.FileName"/>
+        <!-- Short ternary is fine on modern PHP. -->
+        <exclude name="Universal.Operators.DisallowShortTernary"/>
+        <!-- Yoda conditions are stylistic. -->
+        <exclude name="WordPress.PHP.YodaConditions"/>
+        <!-- Line length is too noisy for theme code. -->
+        <exclude name="Generic.Files.LineLength"/>
+    </rule>
+
+    <rule ref="PHPCompatibilityWP"/>
+    <config name="testVersion" value="8.0-"/>
+    <config name="minimum_wp_version" value="6.0"/>
+
+    <rule ref="WordPress.WP.I18n">
+        <properties>
+            <property name="text_domain" type="array">
+                <element value="groser"/>
+                <element value="groser-child"/>
+                <element value="woocommerce"/>
+            </property>
+        </properties>
+    </rule>
+</ruleset>

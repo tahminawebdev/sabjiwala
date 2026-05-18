@@ -80,6 +80,34 @@ Installed via composer:
 - `yith-stripe-payments-for-woocommerce-extended` — premium YITH.
 - `groser-tools` / `elementor-pro` / `elementor-theme-core` / `listo` / `theme-core-options` / `swa-import-export` — custom or premium add-ons bundled with the original theme; place them under `wp-content/plugins/` manually if you have the source.
 
+## Quality gates
+
+CI runs on every PR and on pushes to `main` (workflows live in `.github/workflows/`).
+
+| Workflow | What it does | Blocking |
+| --- | --- | --- |
+| `coding-standards.yml` | PHPCS with WordPress-Extra + PHPCompatibilityWP on **our** code (`wp-config.php`, `wp-content/themes/groser-child/`, `wp-content/mu-plugins/`). | yes |
+| `static-analysis.yml` | PHPStan level 1 with `szepeviktor/phpstan-wordpress` + WooCommerce stubs. Same scope. | yes |
+| `security.yml` → `composer-audit` | `composer audit` against the Packagist Security Advisories DB. | yes |
+| `security.yml` → `phpcs-security` | `WordPress.Security.*` + `WordPress.DB.*` sniffs on our code. | yes |
+| `security.yml` → `phpcs-security-vendor` | Same security sniffs against the **parent Groser theme**. Findings are surfaced as PR annotations. | **informational** (`continue-on-error: true`) |
+| `security.yml` → `trivy-fs` | Trivy filesystem CVE scan, HIGH/CRITICAL only, excluding composer-installed plugins. | yes |
+
+Run the same checks locally:
+
+```bash
+composer install                     # pulls phpcs/phpstan/wpcs/security-advisories
+composer lint                        # vendor/bin/phpcs        (WordPress-Extra, our scope)
+composer lint:fix                    # vendor/bin/phpcbf
+composer analyze                     # vendor/bin/phpstan analyse --memory-limit=1G
+composer security                    # composer audit
+
+vendor/bin/phpcs --standard=phpcs-security.xml.dist          # security sniffs (our scope)
+vendor/bin/phpcs --standard=phpcs-security-vendor.xml.dist   # security sniffs (parent theme — informational)
+```
+
+`roave/security-advisories: dev-latest` is also a `require-dev` dependency, so `composer install` itself will fail locally if any package in the lock file has a published advisory.
+
 ## WP-CLI
 
 WP-CLI is baked into the wordpress image (`docker/wordpress/Dockerfile`) so it runs against the same filesystem the web server uses:

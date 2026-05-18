@@ -1,0 +1,17 @@
+parameters:
+    level: 1
+    paths:
+        - wp-config.php
+        - wp-content/themes/groser-child
+        - wp-content/mu-plugins
+    excludePaths:
+        - vendor/*
+        - wp-content/plugins/*
+        - wp-content/themes/twentytwenty*/*
+        - wp-content/themes/groser/*
+    bootstrapFiles:
+        - phpstan-bootstrap.php
+        - vendor/php-stubs/woocommerce-stubs/woocommerce-stubs.php
+    parallel:
+        maximumNumberOfProcesses: 2
+        processTimeout: 300.0

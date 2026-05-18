@@ -38,20 +38,22 @@ $is_main_shop = is_shop() && ! is_product_category() && ! is_product_tag() && ! 
 
 						<div class="product-categories-row">
 							<?php
-							$product_categories = get_terms( array(
-								'taxonomy'   => 'product_cat',
-								'hide_empty' => true,
-								'parent'     => 0,
-								'orderby'    => 'name',
-								'order'      => 'ASC',
-							) );
+							$product_categories = get_terms(
+								array(
+									'taxonomy'   => 'product_cat',
+									'hide_empty' => true,
+									'parent'     => 0,
+									'orderby'    => 'name',
+									'order'      => 'ASC',
+								)
+							);
 
 							if ( ! empty( $product_categories ) && ! is_wp_error( $product_categories ) ) :
 								foreach ( $product_categories as $category ) :
-									$thumbnail_id = get_term_meta( $category->term_id, 'thumbnail_id', true );
-									$image_url = $thumbnail_id ? wp_get_attachment_url( $thumbnail_id ) : wc_placeholder_img_src( 'woocommerce_thumbnail' );
+									$thumbnail_id  = get_term_meta( $category->term_id, 'thumbnail_id', true );
+									$image_url     = $thumbnail_id ? wp_get_attachment_url( $thumbnail_id ) : wc_placeholder_img_src( 'woocommerce_thumbnail' );
 									$category_link = get_term_link( $category );
-							?>
+									?>
 								<div class="category-item">
 									<a href="<?php echo esc_url( $category_link ); ?>">
 										<div class="category-circle">
@@ -60,10 +62,10 @@ $is_main_shop = is_shop() && ! is_product_category() && ! is_product_tag() && ! 
 										<p class="category-name"><?php echo esc_html( $category->name ); ?></p>
 									</a>
 								</div>
-							<?php
+									<?php
 								endforeach;
 							else :
-							?>
+								?>
 								<p class="no-categories">No categories found.</p>
 							<?php endif; ?>
 						</div>
@@ -92,7 +94,10 @@ $is_main_shop = is_shop() && ! is_product_category() && ! is_product_tag() && ! 
 
 									<?php woocommerce_product_loop_start(); ?>
 
-									<?php while ( have_posts() ) : the_post(); ?>
+									<?php
+									while ( have_posts() ) :
+										the_post();
+										?>
 										<?php wc_get_template_part( 'content', 'product' ); ?>
 									<?php endwhile; ?>
 
