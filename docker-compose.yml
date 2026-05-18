@@ -1,0 +1,70 @@
+services:
+  db:
+    image: mariadb:10.11
+    container_name: shobjiwala_db
+    restart: unless-stopped
+    environment:
+      MARIADB_DATABASE: ${DB_NAME:-shobjiwala}
+      MARIADB_USER: ${DB_USER:-wp}
+      MARIADB_PASSWORD: ${DB_PASSWORD:-wp_password}
+      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root_password}
+    command:
+      - --character-set-server=utf8mb4
+      - --collation-server=utf8mb4_unicode_520_ci
+      - --max-allowed-packet=256M
+      - --innodb-buffer-pool-size=256M
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./db/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${DB_ROOT_PASSWORD:-root_password}"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  wordpress:
+    build:
+      context: ./docker/wordpress
+      dockerfile: Dockerfile
+    image: shobjiwala/wordpress:local
+    container_name: shobjiwala_wp
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      WORDPRESS_DB_HOST: db:3306
+      WORDPRESS_DB_NAME: ${DB_NAME:-shobjiwala}
+      WORDPRESS_DB_USER: ${DB_USER:-wp}
+      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD:-wp_password}
+      WORDPRESS_TABLE_PREFIX: ${TABLE_PREFIX:-KAW_}
+      WP_HOME: ${WP_HOME:-http://localhost:8080}
+      WP_SITEURL: ${WP_SITEURL:-http://localhost:8080}
+      WP_DEBUG: ${WP_DEBUG:-true}
+    ports:
+      - "${HTTP_PORT:-8080}:80"
+    volumes:
+      - ./wp-config.php:/var/www/html/wp-config.php:ro
+      - ./wp-content/themes:/var/www/html/wp-content/themes
+      - ./wp-content/plugins:/var/www/html/wp-content/plugins
+      - ./wp-content/mu-plugins:/var/www/html/wp-content/mu-plugins
+      - ./wp-content/uploads:/var/www/html/wp-content/uploads
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: shobjiwala_pma
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: ${DB_ROOT_PASSWORD:-root_password}
+      UPLOAD_LIMIT: 256M
+    ports:
+      - "${PMA_PORT:-8081}:80"
+
+volumes:
+  db_data:
+    name: shobjiwala_db_data

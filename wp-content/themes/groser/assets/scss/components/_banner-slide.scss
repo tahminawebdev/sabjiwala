@@ -1,0 +1,69 @@
+.banner-slide {
+    &__active {
+        margin: -15px;
+        .slick-arrow {
+            position: absolute;
+            top: 50%;
+            left: -30px;
+            @include transform(translateY(-50%));
+            color: #BEB9B9;
+            font-size: 18px;
+            @include transition(.3s);
+            cursor: pointer;
+            &:hover {
+                color: #121416;
+            }
+            &.slick-next {
+                left: auto;
+                right: -30px;
+            }
+        }
+    }
+    &__single {
+        margin: 15px;
+    }
+    &__item {
+        min-height: 172px;
+        padding: 15px;
+        @include border-radius(3px);
+    }
+    &__img {
+        width: 40%;
+        margin-right: 5%;
+    }
+    &__content {
+        width: calc(100% - 45%);
+        .offer {
+            font-size: 13px;
+            color: #35D10E;
+            font-family: var(--color-font);
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        h3 {
+            font-size: 17px;
+            font-family: var(--font-body);
+            font-weight: 700;
+            color: #121416;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+        }
+        .price {
+            font-size: 14px;
+            color: #131F35;
+            font-weight: 400;
+            margin-bottom: 13px;
+            span {
+                color: #35D10E;
+                font-size: 16px;
+                font-weight: 500;
+                margin-left: 4px;
+            }
+        }
+        a {
+            color: var(--color-black);
+            font-family: var(--font-title);
+            font-weight: 600;
+        }
+    }
+}

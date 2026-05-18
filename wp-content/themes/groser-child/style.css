@@ -1,0 +1,163 @@
+/*
+Theme Name: Groser Child
+Theme URI: https://example.com/groser-child
+Description: Child theme for the Groser WordPress theme.
+Author: Your Name
+Author URI: https://example.com
+Template: groser
+Version: 1.0.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: groser-child
+*/
+
+/* ========================================
+   Shop By Category
+   ======================================== */
+
+.shop-categories-section {
+    padding: 30px 0 50px;
+    background: #fff;
+}
+
+.shop-categories-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+}
+
+.categories-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+}
+
+.category-nav-arrows {
+    display: flex;
+    gap: 8px;
+}
+
+.cat-nav-btn {
+    width: 32px;
+    height: 32px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #fff;
+    cursor: pointer;
+    font-size: 14px;
+    color: #666;
+    transition: all 0.2s ease;
+}
+
+.cat-nav-btn:hover {
+    background: #f5f5f5;
+    color: #333;
+}
+
+.product-categories-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.category-item {
+    flex: 1;
+    min-width: 100px;
+    max-width: 140px;
+    text-align: center;
+}
+
+.category-item a {
+    display: block;
+    text-decoration: none;
+}
+
+.category-circle {
+    width: 110px;
+    height: 110px;
+    margin: 0 auto 12px;
+    border-radius: 50%;
+    background: #f5f5f5;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.category-item:hover .category-circle {
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.category-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.category-name {
+    font-size: 13px;
+    color: #555;
+    margin: 0;
+    font-weight: 400;
+}
+
+.category-item:hover .category-name {
+    color: #333;
+}
+
+.no-categories {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    width: 100%;
+}
+
+/* Responsive */
+@media (max-width: 991px) {
+    .category-circle {
+        width: 85px;
+        height: 85px;
+    }
+
+    .category-item {
+        min-width: 80px;
+        max-width: 120px;
+    }
+}
+
+@media (max-width: 767px) {
+    .product-categories-row {
+        justify-content: center;
+    }
+
+    .category-circle {
+        width: 75px;
+        height: 75px;
+    }
+
+    .category-name {
+        font-size: 12px;
+    }
+}
+
+@media (max-width: 480px) {
+    .shop-categories-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .category-item {
+        min-width: 70px;
+        max-width: 100px;
+    }
+
+    .category-circle {
+        width: 65px;
+        height: 65px;
+    }
+}

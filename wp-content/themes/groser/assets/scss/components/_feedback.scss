@@ -1,0 +1,23 @@
+// feedback
+.feedback {
+    &__slider {
+        
+    }
+    &__item {
+        text-align: center;
+        span {
+            font-size: 12px;
+
+        }
+        h4 {
+            font-size: 16px;
+            font-family: var(--font-body);
+        }
+    }
+    &__img {
+        left: 0;
+        right: 0;
+        margin: auto;
+        margin-top: 15px;
+    }
+}

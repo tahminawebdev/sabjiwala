@@ -1,0 +1,681 @@
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: Groser\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-03-20 04:52+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: \n"
+"Language: \n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Loco https://localise.biz/\n"
+"X-Loco-Version: 2.6.4; wp-6.1.1\n"
+"X-Domain: groser"
+
+#: template-parts/content-search.php:29
+msgid "# Tags"
+msgstr ""
+
+#. 1: reviews count 2: product name
+#: woocommerce/single-product-reviews.php:36
+#, php-format
+msgid "%1$s review for %2$s"
+msgid_plural "%1$s reviews for %2$s"
+msgstr[0] ""
+msgstr[1] ""
+
+#. %s: Quantity.
+#: woocommerce/global/quantity-input.php:28
+#, php-format
+msgid "%s quantity"
+msgstr ""
+
+#: template-parts/footer/footer-two.php:59
+#: template-parts/footer/footer-one.php:59
+msgid "&copy; 2022 groser - Printing Technology. All Rights Reserved."
+msgstr ""
+
+#: template-parts/footer/footer-three.php:87
+#: template-parts/footer/footer-four.php:107
+#: template-parts/footer/footer-five.php:104
+msgid "&copy; 2023 Groser - Grocery Store. All Rights Reserved."
+msgstr ""
+
+#. %s location.
+#: woocommerce/cart/cart-totals.php:72
+#, php-format
+msgid "(estimated for %s)"
+msgstr ""
+
+#. 1: title.
+#: comments.php:36
+msgid "1 Comment"
+msgstr ""
+
+#: inc/groser-functions.php:281
+msgid "404"
+msgstr ""
+
+#: inc/template-functions.php:182
+msgid "404 - Not Found"
+msgstr ""
+
+#: woocommerce/myaccount/form-login.php:104
+msgid "A link to set a new password will be sent to your email address."
+msgstr ""
+
+#: inc/class-wp-groser-navwalker.php:358
+msgid "Add a menu"
+msgstr ""
+
+#. %s is product title
+#: woocommerce/single-product-reviews.php:78
+msgid "Add a review"
+msgstr ""
+
+#: functions.php:157 functions.php:168 functions.php:179 functions.php:190
+msgid "Add Footer here."
+msgstr ""
+
+#: functions.php:201
+msgid "Add Shop Sidebar here."
+msgstr ""
+
+#: functions.php:146
+msgid "Add widgets here."
+msgstr ""
+
+#: woocommerce/single-product/tabs/additional-information.php:22
+msgid "Additional information"
+msgstr ""
+
+#: inc/template-functions.php:462
+msgid "All Categories"
+msgstr ""
+
+#: woocommerce/cart/cart.php:143 woocommerce/cart/cart.php:145
+#: woocommerce/cart/cart.php:146
+msgid "Apply coupon"
+msgstr ""
+
+#: inc/template-functions.php:167 inc/template-functions.php:170
+#: inc/template-functions.php:173 inc/template-functions.php:176
+msgid "Archive for "
+msgstr ""
+
+#: woocommerce/cart/cart.php:92
+msgid "Available on backorder"
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:131
+msgid "Average"
+msgstr ""
+
+#: template-parts/header/header-one.php:107
+#: template-parts/header/header-three.php:111
+msgid "Bar"
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:78
+#, php-format
+msgid "Be the first to review &ldquo;%s&rdquo;"
+msgstr ""
+
+#: lib/plugin-activation.php:83
+msgid "Breadcrumb NavXT"
+msgstr ""
+
+#: template-parts/header/header-six.php:140
+msgid "Browse All Categories"
+msgstr ""
+
+#: template-parts/header/header-one.php:107
+#: template-parts/header/header-three.php:112
+msgid "Browse Categories"
+msgstr ""
+
+#: template-parts/header/header-five.php:45
+#: template-parts/header/header-one.php:90
+#: template-parts/header/header-four.php:140
+msgid "Cart Count"
+msgstr ""
+
+#: woocommerce/cart/cart-totals.php:25
+msgid "Cart totals"
+msgstr ""
+
+#: functions.php:71
+msgid "Category"
+msgstr ""
+
+#: woocommerce/single-product/add-to-cart/variable.php:48
+msgid "Clear"
+msgstr ""
+
+#: inc/template-functions.php:379
+msgid "Comment"
+msgstr ""
+
+#: comments.php:70
+msgid "Comments are closed."
+msgstr ""
+
+#. 1: comment count number, 2: title.
+#: comments.php:42
+#, php-format
+msgctxt "comments title"
+msgid "%1$s Comment"
+msgid_plural "%1$s Comments"
+msgstr[0] ""
+msgstr[1] ""
+
+#: lib/plugin-activation.php:56
+msgid "Contact Form 7"
+msgstr ""
+
+#. %s: Name of current post. Only visible to screen readers
+#: template-parts/content-single.php:38
+#, php-format
+msgid "Continue reading<span class=\"screen-reader-text\"> \"%s\"</span>"
+msgstr ""
+
+#: woocommerce/cart/cart.php:143
+msgid "Coupon code"
+msgstr ""
+
+#: woocommerce/cart/cart.php:143
+msgid "Coupon:"
+msgstr ""
+
+#: woocommerce/single-product/tabs/description.php:22
+msgid "Description"
+msgstr ""
+
+#: functions.php:231
+msgctxt "DM Sans: on or off"
+msgid "on"
+msgstr ""
+
+#: functions.php:228
+msgctxt "Dosis: on or off"
+msgid "on"
+msgstr ""
+
+#. %s: Name of current post. Only visible to screen readers
+#: template-parts/content-page.php:36
+#, php-format
+msgid "Edit <span class=\"screen-reader-text\">%s</span>"
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:98 inc/template-functions.php:395
+msgid "Email"
+msgstr ""
+
+#: woocommerce/myaccount/form-login.php:91
+msgid "Email address"
+msgstr ""
+
+#: functions.php:188
+msgid "Footer Four"
+msgstr ""
+
+#: functions.php:155
+msgid "Footer One"
+msgstr ""
+
+#: functions.php:177
+msgid "Footer Three"
+msgstr ""
+
+#: functions.php:166
+msgid "Footer Two"
+msgstr ""
+
+#: inc/groser-functions.php:311 inc/groser-functions.php:320
+msgid "Go Back Home"
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:130
+msgid "Good"
+msgstr ""
+
+#. Name of the theme
+msgid "Groser"
+msgstr ""
+
+#. Description of the theme
+msgid "Groser - Grocery WordPress woocommerce theme"
+msgstr ""
+
+#. Name of the template
+msgid "Groser Elementor Full Template"
+msgstr ""
+
+#: lib/plugin-activation.php:11
+msgid "groser Tools"
+msgstr ""
+
+#: inc/groser-functions.php:496
+msgid "Heart Count"
+msgstr ""
+
+#: inc/template-functions.php:127
+msgid "Home"
+msgstr ""
+
+#. URI of the theme
+msgid "http://themexriver.com/wp/viando"
+msgstr ""
+
+#. Author URI of the theme
+msgid "https://themeforest.net/user/themexriver"
+msgstr ""
+
+#: lib/ocdi/functions.php:18
+msgid ""
+"Import process may take 3-10 minutes. If you facing any issues please "
+"contact our support.After Import Succesfuly go to Appearance->Menu And Set "
+"your Menu"
+msgstr ""
+
+#: functions.php:225
+msgctxt "Inter: on or off"
+msgid "on"
+msgstr ""
+
+#: template-parts/content-none.php:44
+msgid ""
+"It seems we can&rsquo;t find what you&rsquo;re looking for. Perhaps "
+"searching can help."
+msgstr ""
+
+#: template-parts/header/header-six.php:55
+#: template-parts/header/header-four.php:92
+msgid "I’m searching for..."
+msgstr ""
+
+#: functions.php:237
+msgctxt "League Spartan: on or off"
+msgid "on"
+msgstr ""
+
+#: inc/template-functions.php:378
+msgid "Leave a comment"
+msgstr ""
+
+#. %s is product title
+#: woocommerce/single-product-reviews.php:80
+#, php-format
+msgid "Leave a Reply to %s"
+msgstr ""
+
+#: template-parts/header/header-five.php:31
+#: template-parts/header/header-four.php:98
+msgid "Location"
+msgstr ""
+
+#: woocommerce/myaccount/form-login.php:54
+#: woocommerce/myaccount/form-login.php:56
+#: woocommerce/myaccount/form-login.php:57
+msgid "Log in"
+msgstr ""
+
+#: woocommerce/myaccount/form-login.php:32
+msgid "Login"
+msgstr ""
+
+#: template-parts/header/header-two.php:103
+#: template-parts/header/header-two.php:104
+msgid "login / Sign Up"
+msgstr ""
+
+#: inc/cs-framework-functions.php:107 inc/cs-framework-functions.php:136
+#: inc/cs-framework-functions.php:164
+msgid "Logo"
+msgstr ""
+
+#: woocommerce/myaccount/form-login.php:62
+msgid "Lost your password?"
+msgstr ""
+
+#: lib/plugin-activation.php:67
+msgid "MC4WP: Mailchimp for WordPress"
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:92 inc/template-functions.php:393
+msgid "Name"
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:132
+msgid "Not that bad"
+msgstr ""
+
+#: template-parts/content-none.php:14
+msgid "Nothing Found"
+msgstr ""
+
+#: lib/plugin-activation.php:78
+msgid "One Click Demo Import"
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:144
+msgid ""
+"Only logged in customers who have purchased this product may leave a review."
+msgstr ""
+
+#: inc/groser-functions.php:299
+msgid ""
+"Oops! The page you are looking for does not exist. It might have been moved "
+"or deleted."
+msgstr ""
+
+#: inc/groser-functions.php:290
+msgid "Oops... It looks like you ‘re lost !"
+msgstr ""
+
+#: inc/template-functions.php:634
+msgid "Out of stock"
+msgstr ""
+
+#: template-parts/content-single.php:51 template-parts/content-page.php:22
+msgid "Pages:"
+msgstr ""
+
+#: woocommerce/myaccount/form-login.php:43
+#: woocommerce/myaccount/form-login.php:98
+msgid "Password"
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:129
+msgid "Perfect"
+msgstr ""
+
+#: template-parts/header/header-one.php:30
+#: template-parts/header/header-three.php:31
+msgid "phone"
+msgstr ""
+
+#: woocommerce/checkout/payment.php:33
+msgid "Please fill in your details above to see available payment methods."
+msgstr ""
+
+#. %s: post author.
+#: inc/template-tags.php:83
+#, php-format
+msgctxt "post author"
+msgid "by %s"
+msgstr ""
+
+#. %s: post date.
+#: inc/template-tags.php:30
+#, php-format
+msgctxt "post date"
+msgid "Posted on %s"
+msgstr ""
+
+#: woocommerce/cart/cart.php:31 woocommerce/cart/cart.php:97
+msgid "Price"
+msgstr ""
+
+#: functions.php:70
+msgid "Primary Menu"
+msgstr ""
+
+#: woocommerce/cart/cart.php:30 woocommerce/cart/cart.php:77
+msgid "Product"
+msgstr ""
+
+#: woocommerce/global/quantity-input.php:42
+msgctxt "Product quantity input tooltip"
+msgid "Qty"
+msgstr ""
+
+#: woocommerce/global/quantity-input.php:28 woocommerce/cart/cart.php:32
+#: woocommerce/cart/cart.php:103
+msgid "Quantity"
+msgstr ""
+
+#: functions.php:234
+msgctxt "Quicksand: on or off"
+msgid "on"
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:128
+msgid "Rate&hellip;"
+msgstr ""
+
+#. 1: link to WP admin new post page.
+#: template-parts/content-none.php:24
+#, php-format
+msgid ""
+"Ready to publish your first post? <a href=\"%1$s\">Get started here</a>."
+msgstr ""
+
+#: woocommerce/myaccount/form-login.php:75
+#: woocommerce/myaccount/form-login.php:112
+#: woocommerce/myaccount/form-login.php:114
+#: woocommerce/myaccount/form-login.php:115
+msgid "Register"
+msgstr ""
+
+#: woocommerce/single-product/related.php:27
+msgid "Related products"
+msgstr ""
+
+#: woocommerce/myaccount/form-login.php:51
+msgid "Remember me"
+msgstr ""
+
+#: woocommerce/cart/cart.php:56
+msgid "Remove this item"
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:39
+msgid "Reviews"
+msgstr ""
+
+#: inc/template-functions.php:673
+msgid "Sale quantity"
+msgstr ""
+
+#: woocommerce/loop/sale-flash.php:27
+msgid "Sale!"
+msgstr ""
+
+#: inc/template-functions.php:479
+msgid "Search For Product"
+msgstr ""
+
+#: inc/template-functions.php:234
+msgid "Search for:"
+msgstr ""
+
+#: inc/groser-functions.php:149
+msgid "Search Keywords"
+msgstr ""
+
+#: inc/template-functions.php:179
+msgid "Search Results for "
+msgstr ""
+
+#: inc/template-functions.php:194
+msgid "Search results for &ldquo;"
+msgstr ""
+
+#: inc/template-functions.php:324
+msgid "Search.."
+msgstr ""
+
+#: inc/template-functions.php:235
+msgid "Search..."
+msgstr ""
+
+#: template-parts/header/header-one.php:126
+#: template-parts/header/header-three.php:138
+msgid "Search........"
+msgstr ""
+
+#: template-parts/header/header-four.php:113
+msgid "Select Categories"
+msgstr ""
+
+#: template-parts/header/header-four.php:113
+msgid "Select categories"
+msgstr ""
+
+#: woocommerce/cart/cart-totals.php:52 woocommerce/cart/cart-totals.php:53
+msgid "Shipping"
+msgstr ""
+
+#: functions.php:199
+msgid "Shop Siderbar"
+msgstr ""
+
+#: functions.php:144
+msgid "Sidebar"
+msgstr ""
+
+#. $1 and $2 opening and closing emphasis tags respectively
+#: woocommerce/checkout/payment.php:42
+#, php-format
+msgid ""
+"Since your browser does not support JavaScript, or it is disabled, please "
+"ensure you click the %1$sUpdate Totals%2$s button before placing your order. "
+"You may be charged more than the amount stated above if you fail to do so."
+msgstr ""
+
+#: lib/plugin-activation.php:19 lib/plugin-activation.php:72
+msgid "Slider Revolution"
+msgstr ""
+
+#: inc/template-functions.php:682
+msgid "Sold Total Items"
+msgstr ""
+
+#: inc/template-functions.php:691
+msgid "Sold Total Type (Kg , g , li , Ml)"
+msgstr ""
+
+#: template-parts/content-none.php:37
+msgid ""
+"Sorry, but nothing matched your search terms. Please try again with some "
+"different keywords."
+msgstr ""
+
+#: woocommerce/checkout/payment.php:33
+msgid ""
+"Sorry, it seems that there are no available payment methods for your state. "
+"Please contact us if you require assistance or wish to make alternate "
+"arrangements."
+msgstr ""
+
+#: woocommerce/single-product/add-to-cart/variation.php:22
+msgid ""
+"Sorry, this product is unavailable. Please choose a different combination."
+msgstr ""
+
+#: template-parts/footer/footer-five.php:81
+msgid "Sponsor"
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:84
+msgid "Submit"
+msgstr ""
+
+#: woocommerce/cart/cart-totals.php:30 woocommerce/cart/cart-totals.php:31
+#: woocommerce/cart/cart.php:33 woocommerce/cart/cart.php:125
+msgid "Subtotal"
+msgstr ""
+
+#: lib/plugin-activation.php:61
+msgid "SVG Support"
+msgstr ""
+
+#: template-parts/content-single.php:62
+msgid "Tags:"
+msgstr ""
+
+#. Author of the theme
+msgid "themexriver"
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:66
+msgid "There are no reviews yet."
+msgstr ""
+
+#: woocommerce/single-product/add-to-cart/variable.php:32
+msgid "This product is currently out of stock and unavailable."
+msgstr ""
+
+#: woocommerce/cart/cart-totals.php:98 woocommerce/cart/cart-totals.php:99
+msgid "Total"
+msgstr ""
+
+#: template-parts/header/header-one.php:24
+#: template-parts/header/header-three.php:25
+#: template-parts/header/header-four.php:30
+msgid "track"
+msgstr ""
+
+#: woocommerce/cart/cart.php:153 woocommerce/cart/cart.php:155
+#: woocommerce/cart/cart.php:156
+msgid "Update cart"
+msgstr ""
+
+#: woocommerce/checkout/payment.php:44
+msgid "Update totals"
+msgstr ""
+
+#: template-parts/header/header-five.php:57
+#: template-parts/header/header-one.php:79
+#: template-parts/header/header-three.php:80
+#: template-parts/header/header-four.php:149
+#: template-parts/header/header-two.php:63
+msgid "User"
+msgstr ""
+
+#: woocommerce/myaccount/form-login.php:84
+msgid "Username"
+msgstr ""
+
+#: woocommerce/myaccount/form-login.php:39
+msgid "Username or email address"
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:133
+msgid "Very poor"
+msgstr ""
+
+#: inc/template-functions.php:397
+msgid "Website"
+msgstr ""
+
+#. %s opening and closing link tags respectively
+#: woocommerce/single-product-reviews.php:123
+#, php-format
+msgid "You must be %1$slogged in%2$s to post a review."
+msgstr ""
+
+#: woocommerce/checkout/form-checkout.php:26
+msgid "You must be logged in to checkout."
+msgstr ""
+
+#: inc/template-functions.php:434
+msgid "Your comment is awaiting moderation."
+msgstr ""
+
+#: woocommerce/checkout/form-checkout.php:49
+msgid "Your order"
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:127
+msgid "Your rating"
+msgstr ""
+
+#: woocommerce/single-product-reviews.php:137
+msgid "Your review"
+msgstr ""

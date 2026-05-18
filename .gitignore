@@ -1,0 +1,40 @@
+.env
+.env.local
+.DS_Store
+*.log
+
+# Large source archives - do not commit
+themes.zip
+localhost.sql.gz
+
+# Vendor & composer-managed plugins (installed via composer install)
+/vendor/
+/wp-content/plugins/
+!/wp-content/plugins/.gitkeep
+
+# WP uploads (user content)
+/wp-content/uploads/
+!/wp-content/uploads/.gitkeep
+
+# Mu-plugins composer-managed
+/wp-content/mu-plugins/
+!/wp-content/mu-plugins/.gitkeep
+
+# WP core managed by docker image
+/wp/
+/wp-admin/
+/wp-includes/
+wp-*.php
+!wp-config.php
+!wp-config-docker.php
+xmlrpc.php
+license.txt
+readme.html
+
+# Local DB persistence
+/db/data/
+
+# IDE
+.idea/
+.vscode/
+*.swp
