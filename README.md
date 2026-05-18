@@ -14,15 +14,21 @@ Local WordPress dev environment for the **Groser** grocery WooCommerce site. The
 
 ```
 .
-├── composer.json          # Plugins managed via wpackagist
-├── docker-compose.yml     # WP + MariaDB + phpMyAdmin + WP-CLI
-├── wp-config.php          # Mounted into the container (env-driven)
-├── .env / .env.example    # Local credentials & ports
+├── composer.json                # Plugins managed via wpackagist
+├── docker-compose.yml           # Dev: WP + MariaDB + phpMyAdmin
+├── docker-compose.prod.yml      # Prod overlay: nginx LB, redis, db-backup
+├── wp-config.php                # Mounted into the container (env-driven)
+├── .env / .env.example          # Local credentials & ports
+├── .env.prod.example            # Prod-only extras (REDIS_PASSWORD, …)
+├── docker/
+│   ├── wordpress/Dockerfile     # Custom WP image w/ WP-CLI baked in
+│   ├── nginx/                   # Prod LB config + per-site server blocks
+│   └── db-backup/               # Hourly mysqldump sidecar (24h rolling)
 └── wp-content/
-    ├── themes/            # groser + groser-child (tracked in git)
-    ├── plugins/           # Installed by `composer install` (gitignored)
-    ├── mu-plugins/        # MU plugins (gitignored)
-    └── uploads/           # User uploads (gitignored)
+    ├── themes/                  # groser + groser-child (tracked in git)
+    ├── plugins/                 # Installed by `composer install` (gitignored)
+    ├── mu-plugins/              # MU plugins — shobjiwala-security.php tracked
+    └── uploads/                 # Dev: bind-mounted. Prod: shared named volume.
 ```
 
 ## First-time setup
@@ -45,6 +51,77 @@ docker compose down -v
 docker compose up -d
 ```
 
+## Production
+
+Production runs the same `docker-compose.yml` with a second file layered on top:
+
+```bash
+cp .env.prod.example .env       # fill REDIS_PASSWORD, WP_CACHE_KEY_SALT, etc.
+docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d \
+    --scale wordpress=2
+```
+
+What the prod overlay adds:
+
+| Service | Purpose |
+| --- | --- |
+| `nginx` | L7 load balancer (`least_conn`) + TLS termination. Listens on 80/443. ACME challenge endpoint on port 80. |
+| `redis` | Shared object cache and PHP session store — mandatory once `wordpress` runs >1 replica, otherwise transients diverge per replica. |
+| `db-backup` | Cron sidecar that runs `mysqldump | gzip` hourly into the `db_backups` named volume and prunes files older than 24 hours. |
+
+And changes:
+
+- `wordpress` replicates (`--scale wordpress=N`). No host port mapping — only nginx faces the internet.
+- `uploads` switches from a host bind mount to a `wp_uploads` named volume so every replica writes to the same store.
+- `wp-content/themes`, `plugins`, `mu-plugins` and `wp-config.php` mount read-only (deploys ship code via image rebuild).
+- `phpmyadmin` is profile-gated off. Tunnel via SSH if you need DB admin: `ssh -L 33306:db:3306 user@host`.
+
+### TLS bootstrap
+
+`docker/nginx/conf.d/site.conf` ships HTTP-only by default. After the stack is up and DNS points to the host:
+
+```bash
+# Issue the first cert (run once)
+docker run --rm -it \
+  -v shobjiwala_nginx_certs:/etc/letsencrypt \
+  -v shobjiwala_nginx_acme:/var/www/certbot \
+  certbot/certbot certonly --webroot -w /var/www/certbot \
+      -d your-domain.example -m you@example.com --agree-tos --no-eff-email
+```
+
+Then uncomment the `server { listen 443 ssl http2; … }` block in `docker/nginx/conf.d/site.conf` (it ships in place, commented), swap the `location /` in the HTTP server for `return 301 https://$host$request_uri;`, and reload:
+
+```bash
+docker compose -f docker-compose.yml -f docker-compose.prod.yml exec nginx nginx -s reload
+```
+
+### Backups — restore one
+
+```bash
+# List what's in the rolling window
+docker compose -f docker-compose.yml -f docker-compose.prod.yml \
+  exec db-backup ls -lh /backups
+
+# Restore (or sanity-check) a specific dump
+docker run --rm -v shobjiwala_db_backups:/backups mariadb:10.11 \
+  bash -c 'gunzip -t /backups/backup-2026-05-18T14-00.sql.gz && echo ok'
+```
+
+The 24-file retention is enforced inside the container; no host-side cron needed.
+
+### Volumes — what's permanent
+
+All persistent state lives in named Docker volumes. `docker compose down` leaves them intact; `docker compose down -v` destroys them. Backups go to `db_backups` regardless, so even a `down -v` recovery has a working path (restore the latest gzip into a freshly initialised `db_data`).
+
+| Volume | Used in | Holds |
+| --- | --- | --- |
+| `shobjiwala_db_data` | dev, prod | MariaDB data files. |
+| `shobjiwala_wp_uploads` | prod | Uploaded media, shared between WP replicas. |
+| `shobjiwala_db_backups` | prod | Hourly mysqldumps, last 24 files. |
+| `shobjiwala_redis_data` | prod | Redis RDB + AOF snapshot. |
+| `shobjiwala_nginx_certs` | prod | Let's Encrypt cert + private key. |
+| `shobjiwala_nginx_acme` | prod | ACME HTTP-01 challenge work dir. |
+
 ## Active plugins
 
 Installed via composer:
@@ -63,6 +140,7 @@ Installed via composer:
 - mailchimp-for-wp
 - one-click-demo-import
 - optinmonster
+- redis-cache (used by the prod stack — activate via `wp plugin activate redis-cache` after the prod overlay is up)
 - svg-support
 - woo-smart-quick-view
 - woo-smart-wishlist

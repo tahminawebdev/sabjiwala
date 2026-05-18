@@ -91,6 +91,21 @@ if ( ! empty( $_SERVER['HTTP_X_FORWARDED_PROTO'] ) && 'https' === $_SERVER['HTTP
 	$_SERVER['HTTPS'] = 'on';
 }
 
+// Redis object cache + session storage. Only defined when WP_REDIS_HOST is
+// present (i.e. running under docker-compose.prod.yml), so dev keeps using
+// the default in-memory cache with no Redis dependency.
+$wp_redis_host = shobjiwala_env( 'WP_REDIS_HOST' );
+if ( $wp_redis_host ) {
+	define( 'WP_REDIS_HOST', $wp_redis_host );
+	define( 'WP_REDIS_PORT', (int) shobjiwala_env( 'WP_REDIS_PORT', 6379 ) );
+	define( 'WP_REDIS_PASSWORD', shobjiwala_env_required( 'WP_REDIS_PASSWORD' ) );
+	define( 'WP_REDIS_TIMEOUT', 1 );
+	define( 'WP_REDIS_READ_TIMEOUT', 1 );
+	// Unique per environment — keeps staging keys from poisoning prod.
+	define( 'WP_CACHE_KEY_SALT', shobjiwala_env_required( 'WP_CACHE_KEY_SALT' ) );
+	define( 'WP_CACHE', true );
+}
+
 if ( ! defined( 'ABSPATH' ) ) {
 	define( 'ABSPATH', __DIR__ . '/' );
 }

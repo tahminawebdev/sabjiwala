@@ -26,7 +26,8 @@ services:
       context: ./docker/wordpress
       dockerfile: Dockerfile
     image: shobjiwala/wordpress:local
-    container_name: shobjiwala_wp
+    # No container_name — prod scales this service with --scale wordpress=N,
+    # which requires letting compose auto-generate names (shobjiwala-wordpress-1, ...).
     restart: unless-stopped
     depends_on:
       db:

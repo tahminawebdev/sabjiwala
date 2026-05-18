@@ -32,6 +32,7 @@
         "wpackagist-plugin/mailchimp-for-wp": "*",
         "wpackagist-plugin/one-click-demo-import": "*",
         "wpackagist-plugin/optinmonster": "*",
+        "wpackagist-plugin/redis-cache": "*",
         "wpackagist-plugin/svg-support": "*",
         "wpackagist-plugin/woo-smart-quick-view": "*",
         "wpackagist-plugin/woo-smart-wishlist": "*",
