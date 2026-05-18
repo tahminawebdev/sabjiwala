@@ -1,11 +1,11 @@
 # Shobjiwala — WordPress (composer-managed)
 
-Local WordPress dev environment for the **Groser** grocery WooCommerce site, built from the database + themes archived in `tahminawebdev/sabjiwala`.
+Local WordPress dev environment for the **Groser** grocery WooCommerce site. Themes are tracked in git; plugins are pulled by Composer. No seed database is bundled — first boot starts on an empty DB.
 
 ## Stack
 
-- **WordPress** latest (apache + PHP 8.3) — core supplied by the official `wordpress` docker image. PHP 8.3 matches the original source site (the dump was created on PHP 8.3.28 / WP 6.9.1) and is the highest PHP that WordPress fully supports without exceptions.
-- **MySQL** 5.7 — matches the schema/collation of the original dump.
+- **WordPress** latest (apache + PHP 8.3) — core supplied by the official `wordpress` docker image. PHP 8.3 is the highest PHP that WordPress fully supports without exceptions.
+- **MariaDB** 10.11 — `utf8mb4` / `utf8mb4_unicode_520_ci`.
 - **phpMyAdmin** 5 — DB admin UI.
 - **WP-CLI** — runnable on demand via the `wpcli` service.
 - **Composer** — manages all plugins (and theme dependencies) from [wpackagist](https://wpackagist.org).
@@ -15,10 +15,9 @@ Local WordPress dev environment for the **Groser** grocery WooCommerce site, bui
 ```
 .
 ├── composer.json          # Plugins managed via wpackagist
-├── docker-compose.yml     # WP + MySQL + phpMyAdmin + WP-CLI
+├── docker-compose.yml     # WP + MariaDB + phpMyAdmin + WP-CLI
 ├── wp-config.php          # Mounted into the container (env-driven)
 ├── .env / .env.example    # Local credentials & ports
-├── db/init/01-groser.sql  # Imported on first DB boot
 └── wp-content/
     ├── themes/            # groser + groser-child (tracked in git)
     ├── plugins/           # Installed by `composer install` (gitignored)
@@ -31,22 +30,22 @@ Local WordPress dev environment for the **Groser** grocery WooCommerce site, bui
 ```bash
 cp .env.example .env       # edit if you want to change ports/creds
 composer install           # pulls plugins into wp-content/plugins
-docker compose up -d       # boots db, imports SQL, starts WP
+docker compose up -d       # boots db + WP on an empty database
 ```
 
 Then visit:
 
-- WordPress: <http://localhost:8080>
+- WordPress: <http://localhost:8080> — runs through the standard WP installer the first time
 - phpMyAdmin: <http://localhost:8081>
 
-The DB import runs **only on the first boot** when the `db_data` volume is empty. To re-run, drop and recreate:
+To reset everything (DB volume + uploads), drop and recreate:
 
 ```bash
 docker compose down -v
 docker compose up -d
 ```
 
-## Active plugins (extracted from the original DB)
+## Active plugins
 
 Installed via composer:
 
@@ -119,8 +118,7 @@ docker compose exec -u www-data wordpress wp search-replace 'https://oldsite.exa
 docker compose exec -u www-data wordpress wp rewrite flush --hard
 ```
 
-## Notes on the imported data
+## Notes
 
-- Table prefix: `KAW_` (preserved from the original install).
-- The dump references stale absolute paths under `/home1/qkplfgmy/public_html/...` inside serialized option values (Duplicator backups, etc.). They are cosmetic and do not block local boot.
-- Uploads (`wp-content/uploads`) were **not** included in the source archive — media references in posts will 404 until you obtain them separately.
+- Table prefix: `KAW_` (matches the original install — kept so the existing `groser` theme and any future imports line up).
+- `wp-content/uploads` is gitignored; populate via the WP media library or a separate import.

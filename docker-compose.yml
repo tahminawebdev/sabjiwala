@@ -15,7 +15,6 @@ services:
       - --innodb-buffer-pool-size=256M
     volumes:
       - db_data:/var/lib/mysql
-      - ./db/init:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-p${DB_ROOT_PASSWORD:-root_password}"]
       interval: 10s
