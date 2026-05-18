@@ -31,6 +31,9 @@ xmlrpc.php
 license.txt
 readme.html
 
+# Default themes shipped by the WordPress docker image (not project assets)
+/wp-content/themes/twentytwenty*/
+
 # Local DB persistence
 /db/data/
 
