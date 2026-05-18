@@ -2,22 +2,25 @@
 .env.local
 .DS_Store
 *.log
+.claude/
 
 # Large source archives - do not commit
 themes.zip
 localhost.sql.gz
 
-# Vendor & composer-managed plugins (installed via composer install)
+# Vendor & composer-managed plugins (installed via composer install).
+# Note the trailing /* — Git cannot re-include files under a directory that is
+# itself ignored, so we ignore *contents* and use !.gitkeep to keep the dir.
 /vendor/
-/wp-content/plugins/
+/wp-content/plugins/*
 !/wp-content/plugins/.gitkeep
 
 # WP uploads (user content)
-/wp-content/uploads/
+/wp-content/uploads/*
 !/wp-content/uploads/.gitkeep
 
 # Mu-plugins composer-managed
-/wp-content/mu-plugins/
+/wp-content/mu-plugins/*
 !/wp-content/mu-plugins/.gitkeep
 
 # WP core managed by docker image
