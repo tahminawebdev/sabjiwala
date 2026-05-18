@@ -3,7 +3,7 @@
 **Status:** draft, awaiting review
 **Date:** 2026-05-18
 **Owner:** Shobjiwala team
-**Scope:** Add WooCommerce payment processing for cards plus Apple Pay and Google Pay, in region C (UK / EU / US, currencies GBP / EUR / USD). One-off purchases only; subscriptions are out of scope.
+**Scope:** Add WooCommerce payment processing for cards plus Apple Pay and Google Pay. Region: UK. Currency: **GBP** (single-currency launch). One-off purchases only; subscriptions are out of scope.
 
 ## 1. Decision
 
@@ -86,8 +86,8 @@ Done out-of-band by the merchant before plugin configuration.
 
 | Setting | Value |
 | --- | --- |
-| WC currency | Per region: GBP / EUR / USD. Decide one primary; multi-currency is out of scope (would need a separate plugin like Aelia or WooCommerce Multi-Currency). |
-| WC shop country | Merchant's country of establishment. |
+| WC currency | **GBP**. Multi-currency is out of scope (would need a separate plugin like Aelia or WooCommerce Multi-Currency). |
+| WC shop country | United Kingdom. |
 | WC checkout pages | Cart, Checkout, My Account auto-created by WC; ensure they exist after the empty-DB install completes. |
 | Stripe plugin → mode | **Test** until §8 passes, then **Live**. |
 | Stripe plugin → payment methods | Cards, Apple Pay, Google Pay, Link enabled. Webhook URL configured (the plugin generates this; copy it into the Stripe dashboard). |
@@ -159,6 +159,6 @@ Captured here so they are not lost; each becomes its own spec when prioritised.
 
 None at design time. Standing assumptions to confirm before implementation:
 
-- Primary currency is one of GBP / EUR / USD (single currency at launch).
+- Primary currency is **GBP**, single currency at launch.
 - The merchant entity exists and can pass Stripe / PayPal KYC.
 - Production is HTTPS-served (with a valid cert, not self-signed).

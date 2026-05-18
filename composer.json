@@ -37,6 +37,8 @@
         "wpackagist-plugin/woo-smart-wishlist": "*",
         "wpackagist-plugin/woo-variation-swatches": "*",
         "wpackagist-plugin/woocommerce": "*",
+        "wpackagist-plugin/woocommerce-gateway-stripe": "*",
+        "wpackagist-plugin/woocommerce-paypal-payments": "*",
         "wpackagist-plugin/wordpress-seo": "*",
         "wpackagist-plugin/wpforms-lite": "*"
     },
