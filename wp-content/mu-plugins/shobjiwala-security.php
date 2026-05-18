@@ -51,6 +51,8 @@ add_filter(
  * second public user-enumeration vector. Authors who need a public profile
  * page should publish one through a regular post / page.
  */
+// Priority 0 so we beat redirect_canonical (priority 10), which would
+// otherwise emit a `Location: /author/<slug>/` and leak the slug.
 add_action(
 	'template_redirect',
 	function () {
@@ -58,14 +60,25 @@ add_action(
 			wp_safe_redirect( home_url( '/' ), 301 );
 			exit;
 		}
-	}
+	},
+	0
 );
 
+// Catch /?author=N before WP parses the request so the slug never resolves.
+// Gated to frontend requests — wp-admin uses ?author=N for post-filter UIs
+// and the REST API for author filters on the posts collection.
 add_action(
 	'init',
 	function () {
-		// Block /?author=N at query-vars time so the redirect happens before
-		// anything renders.
+		if ( is_admin() ) {
+			return;
+		}
+		if ( defined( 'REST_REQUEST' ) && REST_REQUEST ) {
+			return;
+		}
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
+			return;
+		}
 		if ( isset( $_GET['author'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			wp_safe_redirect( home_url( '/' ), 301 );
 			exit;
