@@ -4,10 +4,10 @@ services:
     container_name: shobjiwala_db
     restart: unless-stopped
     environment:
-      MARIADB_DATABASE: ${DB_NAME:-shobjiwala}
-      MARIADB_USER: ${DB_USER:-wp}
-      MARIADB_PASSWORD: ${DB_PASSWORD:-wp_password}
-      MARIADB_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-root_password}
+      MARIADB_DATABASE: "${DB_NAME:?DB_NAME is required (copy .env.example to .env)}"
+      MARIADB_USER: "${DB_USER:?DB_USER is required}"
+      MARIADB_PASSWORD: "${DB_PASSWORD:?DB_PASSWORD is required}"
+      MARIADB_ROOT_PASSWORD: "${DB_ROOT_PASSWORD:?DB_ROOT_PASSWORD is required}"
     command:
       - --character-set-server=utf8mb4
       - --collation-server=utf8mb4_unicode_520_ci
@@ -33,13 +33,23 @@ services:
         condition: service_healthy
     environment:
       WORDPRESS_DB_HOST: db:3306
-      WORDPRESS_DB_NAME: ${DB_NAME:-shobjiwala}
-      WORDPRESS_DB_USER: ${DB_USER:-wp}
-      WORDPRESS_DB_PASSWORD: ${DB_PASSWORD:-wp_password}
+      WORDPRESS_DB_NAME: "${DB_NAME:?DB_NAME is required}"
+      WORDPRESS_DB_USER: "${DB_USER:?DB_USER is required}"
+      WORDPRESS_DB_PASSWORD: "${DB_PASSWORD:?DB_PASSWORD is required}"
       WORDPRESS_TABLE_PREFIX: ${TABLE_PREFIX:-KAW_}
       WP_HOME: ${WP_HOME:-http://localhost:8080}
       WP_SITEURL: ${WP_SITEURL:-http://localhost:8080}
-      WP_DEBUG: ${WP_DEBUG:-true}
+      WP_DEBUG: "${WP_DEBUG:-false}"
+      # All WORDPRESS_*_KEY/SALT vars are required. Generate with:
+      #   for i in {1..8}; do openssl rand -base64 48 | tr -d '\n'; echo; done
+      WORDPRESS_AUTH_KEY: "${WORDPRESS_AUTH_KEY:?WORDPRESS_AUTH_KEY is required}"
+      WORDPRESS_SECURE_AUTH_KEY: "${WORDPRESS_SECURE_AUTH_KEY:?WORDPRESS_SECURE_AUTH_KEY is required}"
+      WORDPRESS_LOGGED_IN_KEY: "${WORDPRESS_LOGGED_IN_KEY:?WORDPRESS_LOGGED_IN_KEY is required}"
+      WORDPRESS_NONCE_KEY: "${WORDPRESS_NONCE_KEY:?WORDPRESS_NONCE_KEY is required}"
+      WORDPRESS_AUTH_SALT: "${WORDPRESS_AUTH_SALT:?WORDPRESS_AUTH_SALT is required}"
+      WORDPRESS_SECURE_AUTH_SALT: "${WORDPRESS_SECURE_AUTH_SALT:?WORDPRESS_SECURE_AUTH_SALT is required}"
+      WORDPRESS_LOGGED_IN_SALT: "${WORDPRESS_LOGGED_IN_SALT:?WORDPRESS_LOGGED_IN_SALT is required}"
+      WORDPRESS_NONCE_SALT: "${WORDPRESS_NONCE_SALT:?WORDPRESS_NONCE_SALT is required}"
     ports:
       - "${HTTP_PORT:-8080}:80"
     volumes:
@@ -59,10 +69,11 @@ services:
     environment:
       PMA_HOST: db
       PMA_USER: root
-      PMA_PASSWORD: ${DB_ROOT_PASSWORD:-root_password}
+      PMA_PASSWORD: "${DB_ROOT_PASSWORD:?DB_ROOT_PASSWORD is required}"
       UPLOAD_LIMIT: 256M
     ports:
-      - "${PMA_PORT:-8081}:80"
+      # Bind to localhost only — phpMyAdmin must never be exposed publicly.
+      - "127.0.0.1:${PMA_PORT:-8081}:80"
 
 volumes:
   db_data:
