@@ -42,7 +42,7 @@ jobs:
           KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS }}
         run: |
           mkdir -p ~/.ssh
-          printf '%s' "$BOOTSTRAP_SSH_KEY" > ~/.ssh/id_bootstrap
+          printf '%s\n' "$BOOTSTRAP_SSH_KEY" > ~/.ssh/id_bootstrap
           chmod 600 ~/.ssh/id_bootstrap
           printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
           chmod 644 ~/.ssh/known_hosts
@@ -69,7 +69,7 @@ jobs:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
           SERVER_HOST: ${{ secrets.SERVER_HOST }}
         run: |
-          printf '%s' "$SSH_PRIVATE_KEY" > ~/.ssh/id_deploy
+          printf '%s\n' "$SSH_PRIVATE_KEY" > ~/.ssh/id_deploy
           chmod 600 ~/.ssh/id_deploy
           ssh -i ~/.ssh/id_deploy -o IdentitiesOnly=yes -o ConnectTimeout=15 \
             "deploy@${SERVER_HOST}" \
