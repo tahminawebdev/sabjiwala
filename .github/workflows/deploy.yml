@@ -54,7 +54,7 @@ jobs:
             --exclude='*.sql.gz' \
             --exclude='data/' \
             --exclude='.organic-ai/' \
-            --exclude='wp-content/uploads' \
+            --exclude='wp-content/uploads/' \
             wp-content/ build/wp-content/
           rsync -a vendor/ build/vendor/
           cp wp-config.php build/
@@ -99,7 +99,7 @@ jobs:
       - name: Health check
         run: |
           set -e
-          for i in $(seq 1 10); do
+          for i in $(seq 1 15); do
             if curl -fsS "http://${SERVER_HOST}/healthz" >/dev/null; then
               echo "Health check passed on attempt $i"
               exit 0
