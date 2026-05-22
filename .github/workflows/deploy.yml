@@ -45,16 +45,16 @@ jobs:
           set -euo pipefail
           rm -rf build
           mkdir -p build
+          # Rsync source is wp-content/ — patterns are relative to that root.
+          # Excluding 'data/' here would match ANY data dir at any depth and
+          # break Elementor + other plugins that ship runtime data/ subdirs.
           rsync -a --delete \
             --exclude='.git' \
             --exclude='node_modules' \
-            --exclude='tests' \
             --exclude='.env*' \
             --exclude='*.sql' \
             --exclude='*.sql.gz' \
-            --exclude='data/' \
-            --exclude='.organic-ai/' \
-            --exclude='wp-content/uploads/' \
+            --exclude='/uploads/' \
             wp-content/ build/wp-content/
           rsync -a vendor/ build/vendor/
           cp wp-config.php build/
