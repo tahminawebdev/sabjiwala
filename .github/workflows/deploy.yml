@@ -1,0 +1,118 @@
+name: Deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Branch, tag, or SHA to deploy"
+        required: false
+        default: main
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-prod
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build + ship
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SERVER_HOST: ${{ secrets.SERVER_HOST }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: Set up PHP 8.3
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: composer:v2
+          coverage: none
+
+      - name: Composer install (no dev)
+        run: composer install --no-dev --prefer-dist --no-progress --no-interaction --optimize-autoloader
+
+      - name: Stage build artifact
+        run: |
+          set -euo pipefail
+          rm -rf build
+          mkdir -p build
+          rsync -a --delete \
+            --exclude='.git' \
+            --exclude='node_modules' \
+            --exclude='tests' \
+            --exclude='.env*' \
+            --exclude='*.sql' \
+            --exclude='*.sql.gz' \
+            --exclude='data/' \
+            --exclude='.organic-ai/' \
+            --exclude='wp-content/uploads' \
+            wp-content/ build/wp-content/
+          rsync -a vendor/ build/vendor/
+          cp wp-config.php build/
+          cp composer.json composer.lock build/
+          cp docker-compose.yml docker-compose.prod.yml build/
+          cp -r docker build/docker
+          cp -r deploy build/deploy
+          ls -la build
+
+      - name: Compute release timestamp
+        id: ts
+        run: echo "release_ts=$(date -u +%Y-%m-%dT%H-%M-%SZ)" >> "$GITHUB_OUTPUT"
+
+      - name: Install SSH key + known_hosts
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          KNOWN_HOSTS:     ${{ secrets.KNOWN_HOSTS }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s' "$SSH_PRIVATE_KEY" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Rsync build → server
+        env:
+          RELEASE_TS: ${{ steps.ts.outputs.release_ts }}
+        run: |
+          rsync -az --delete \
+            -e "ssh -i ~/.ssh/id_deploy -o IdentitiesOnly=yes -o ConnectTimeout=15" \
+            build/ \
+            "${SSH_USER}@${SERVER_HOST}:/opt/shobjiwala/releases/${RELEASE_TS}/"
+
+      - name: Run release.sh on server
+        env:
+          RELEASE_TS: ${{ steps.ts.outputs.release_ts }}
+        run: |
+          ssh -i ~/.ssh/id_deploy -o IdentitiesOnly=yes -o ConnectTimeout=15 \
+            "${SSH_USER}@${SERVER_HOST}" \
+            "bash /opt/shobjiwala/releases/${RELEASE_TS}/deploy/release.sh '${RELEASE_TS}'"
+
+      - name: Health check
+        run: |
+          set -e
+          for i in $(seq 1 10); do
+            if curl -fsS "http://${SERVER_HOST}/healthz" >/dev/null; then
+              echo "Health check passed on attempt $i"
+              exit 0
+            fi
+            echo "Attempt $i failed, sleeping 6s"
+            sleep 6
+          done
+          echo "Health check FAILED — triggering auto-rollback" >&2
+          exit 1
+
+      - name: Auto-rollback on failure
+        if: failure() && steps.ts.outputs.release_ts != ''
+        run: |
+          ssh -i ~/.ssh/id_deploy -o IdentitiesOnly=yes -o ConnectTimeout=15 \
+            "${SSH_USER}@${SERVER_HOST}" \
+            "bash /opt/shobjiwala/current/deploy/rollback.sh ''"
