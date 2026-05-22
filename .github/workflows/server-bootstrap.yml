@@ -1,0 +1,77 @@
+name: Server Bootstrap (one-time)
+
+on:
+  workflow_dispatch:
+    inputs:
+      laptop_pubkey:
+        description: "Operator laptop SSH public key (single line, ssh-ed25519/ssh-rsa)"
+        required: true
+        type: string
+      ci_pubkey:
+        description: "CI deploy key public half (single line, ssh-ed25519/ssh-rsa)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  bootstrap:
+    name: Bootstrap droplet
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Validate inputs look like SSH pubkeys
+        run: |
+          for k in "${{ inputs.laptop_pubkey }}" "${{ inputs.ci_pubkey }}"; do
+            case "$k" in
+              ssh-ed25519\ *|ssh-rsa\ *|ecdsa-sha2-*\ *) ;;
+              *) echo "Input does not look like an SSH public key: $k" >&2; exit 1;;
+            esac
+          done
+
+      - name: Install bootstrap SSH key
+        env:
+          BOOTSTRAP_SSH_KEY: ${{ secrets.BOOTSTRAP_SSH_KEY }}
+          KNOWN_HOSTS: ${{ secrets.KNOWN_HOSTS }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s' "$BOOTSTRAP_SSH_KEY" > ~/.ssh/id_bootstrap
+          chmod 600 ~/.ssh/id_bootstrap
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: Copy bootstrap.sh to server
+        env:
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+        run: |
+          scp -i ~/.ssh/id_bootstrap -o IdentitiesOnly=yes \
+            deploy/bootstrap.sh "root@${SERVER_HOST}:/root/bootstrap.sh"
+
+      - name: Run bootstrap as root
+        env:
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+          CI_PUBKEY: ${{ inputs.ci_pubkey }}
+          LAPTOP_PUBKEY: ${{ inputs.laptop_pubkey }}
+        run: |
+          ssh -i ~/.ssh/id_bootstrap -o IdentitiesOnly=yes \
+            "root@${SERVER_HOST}" \
+            "CI_PUBKEY='${CI_PUBKEY}' LAPTOP_PUBKEY='${LAPTOP_PUBKEY}' bash /root/bootstrap.sh"
+
+      - name: Verify deploy@ SSH works (post-hardening)
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SERVER_HOST: ${{ secrets.SERVER_HOST }}
+        run: |
+          printf '%s' "$SSH_PRIVATE_KEY" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          ssh -i ~/.ssh/id_deploy -o IdentitiesOnly=yes \
+            "deploy@${SERVER_HOST}" \
+            "id && docker info >/dev/null && echo 'deploy user OK'"
+
+      - name: Print reminder
+        run: |
+          echo "::warning ::Bootstrap done. DELETE the BOOTSTRAP_SSH_KEY GitHub Secret now."
