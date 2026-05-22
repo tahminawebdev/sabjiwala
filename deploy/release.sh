@@ -34,7 +34,15 @@ log "docker compose up -d"
 docker compose -f docker-compose.yml -f docker-compose.prod.yml \
     --env-file .env up -d --remove-orphans
 
-# --- 4. Prune old releases ----------------------------------------------------
+# --- 4. Fix uploads ownership (the named volume is created as root:root on
+#        first up; www-data must own it so WP can write Elementor CSS,
+#        WooCommerce CSV imports, media uploads, etc.). Idempotent.
+log "Ensuring www-data owns wp-content/uploads in the running WP container"
+docker compose -f docker-compose.yml -f docker-compose.prod.yml \
+    --env-file .env exec -T -u root wordpress \
+    sh -c 'chown -R www-data:www-data /var/www/html/wp-content/uploads && chmod -R u+rwX,g+rwX /var/www/html/wp-content/uploads'
+
+# --- 5. Prune old releases ----------------------------------------------------
 log "Pruning old releases (keeping last 5)"
 # shellcheck disable=SC2012
 # ls -dt gives reliable mtime order; find+stat is not portable across distros
