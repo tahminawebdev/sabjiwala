@@ -43,9 +43,10 @@ if ( ! function_exists( 'shobjiwala_env_required' ) ) {
 	function shobjiwala_env_required( $key ) {
 		$value = getenv( $key );
 		if ( false === $value || '' === $value ) {
-			throw new RuntimeException(
-				sprintf( 'Required environment variable %s is not set. Refusing to boot with a fallback default.', $key )
-			);
+			// $key is a hard-coded constant name from this file, not user input;
+			// WP escape fns aren't loaded yet during wp-config boot.
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped
+			throw new RuntimeException( sprintf( 'Required environment variable %s is not set. Refusing to boot with a fallback default.', $key ) );
 		}
 		return $value;
 	}
