@@ -34,6 +34,13 @@ log "docker compose up -d"
 docker compose -f docker-compose.yml -f docker-compose.prod.yml \
     --env-file .env up -d --remove-orphans
 
+# Nginx bind-mounts its conf from the release dir; the running container
+# resolves the path at start time, so a symlink flip alone is invisible
+# to it. Force-recreate nginx so it re-binds to the new release's conf.
+log "Force-recreating nginx so it re-binds to the new release's conf"
+docker compose -f docker-compose.yml -f docker-compose.prod.yml \
+    --env-file .env up -d --force-recreate --no-deps nginx
+
 # --- 4. Fix uploads ownership (the named volume is created as root:root on
 #        first up; www-data must own it so WP can write Elementor CSS,
 #        WooCommerce CSV imports, media uploads, etc.). Idempotent.
