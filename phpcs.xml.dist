@@ -33,6 +33,9 @@
         <exclude name="WordPress.PHP.YodaConditions"/>
         <!-- Line length is too noisy for theme code. -->
         <exclude name="Generic.Files.LineLength"/>
+        <!-- Column-aligned arguments (e.g. wp-config define blocks) improve readability. -->
+        <exclude name="Generic.Functions.FunctionCallArgumentSpacing.TooMuchSpaceAfterComma"/>
+        <exclude name="PEAR.Functions.FunctionCallSignature.SpaceAfterComma"/>
     </rule>
 
     <rule ref="PHPCompatibilityWP"/>
