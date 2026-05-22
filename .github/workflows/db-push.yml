@@ -1,0 +1,110 @@
+name: DB Push (DESTRUCTIVE)
+
+on:
+  workflow_dispatch:
+    inputs:
+      confirm:
+        description: 'Type literally: OVERWRITE-PROD-DB'
+        required: true
+        type: string
+      old_url:
+        description: "URL currently stored in the dump"
+        required: false
+        default: "http://localhost:8080"
+        type: string
+      new_url:
+        description: "URL to rewrite to on the server"
+        required: false
+        default: "http://157.245.45.208"
+        type: string
+      ref:
+        description: "Branch holding the snapshot (e.g. snapshot/2026-05-22)"
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: db-push-prod
+  cancel-in-progress: false
+
+jobs:
+  push:
+    name: Ship + import DB dump
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SERVER_HOST: ${{ secrets.SERVER_HOST }}
+      SSH_USER:    ${{ secrets.SSH_USER }}
+    steps:
+      - name: Hard gate — verify confirm string
+        env:
+          CONFIRM: ${{ inputs.confirm }}
+        run: |
+          if [ "$CONFIRM" != "OVERWRITE-PROD-DB" ]; then
+            echo "Refusing to run — confirm field must equal OVERWRITE-PROD-DB" >&2
+            exit 1
+          fi
+
+      - name: Checkout snapshot branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: Verify dump exists in checked-out tree
+        run: |
+          test -s deploy/snapshots/latest.sql.gz \
+            || { echo "deploy/snapshots/latest.sql.gz missing on checked-out branch"; exit 1; }
+          ls -lh deploy/snapshots/latest.sql.gz
+
+      - name: Install SSH key + known_hosts
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          KNOWN_HOSTS:     ${{ secrets.KNOWN_HOSTS }}
+        run: |
+          mkdir -p ~/.ssh
+          printf '%s' "$SSH_PRIVATE_KEY" > ~/.ssh/id_deploy
+          chmod 600 ~/.ssh/id_deploy
+          printf '%s\n' "$KNOWN_HOSTS" > ~/.ssh/known_hosts
+          chmod 644 ~/.ssh/known_hosts
+
+      - name: SCP dump to server
+        run: |
+          ssh -i ~/.ssh/id_deploy -o IdentitiesOnly=yes -o ConnectTimeout=15 \
+            "${SSH_USER}@${SERVER_HOST}" "mkdir -p /opt/shobjiwala/shared/db-pushes"
+          scp -i ~/.ssh/id_deploy -o IdentitiesOnly=yes -o ConnectTimeout=15 \
+            deploy/snapshots/latest.sql.gz \
+            "${SSH_USER}@${SERVER_HOST}:/opt/shobjiwala/shared/db-pushes/latest.sql.gz"
+
+      - name: Dry-run search-replace
+        env:
+          OLD_URL: ${{ inputs.old_url }}
+          NEW_URL: ${{ inputs.new_url }}
+        run: |
+          ssh -i ~/.ssh/id_deploy -o IdentitiesOnly=yes -o ConnectTimeout=15 \
+            "${SSH_USER}@${SERVER_HOST}" \
+            "bash /opt/shobjiwala/current/deploy/db-import.sh \
+              /opt/shobjiwala/shared/db-pushes/latest.sql.gz \
+              '${OLD_URL}' '${NEW_URL}'"
+
+      - name: Apply search-replace for real
+        env:
+          OLD_URL: ${{ inputs.old_url }}
+          NEW_URL: ${{ inputs.new_url }}
+        run: |
+          ssh -i ~/.ssh/id_deploy -o IdentitiesOnly=yes -o ConnectTimeout=15 \
+            "${SSH_USER}@${SERVER_HOST}" \
+            "bash /opt/shobjiwala/current/deploy/db-import.sh \
+              /opt/shobjiwala/shared/db-pushes/latest.sql.gz \
+              '${OLD_URL}' '${NEW_URL}' --apply"
+
+      - name: Health check
+        run: |
+          for _ in $(seq 1 5); do
+            if curl -fsS "http://${SERVER_HOST}/healthz" >/dev/null; then
+              echo "OK"; exit 0
+            fi
+            sleep 5
+          done
+          echo "Health check failed after DB push" >&2; exit 1
