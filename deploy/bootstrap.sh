@@ -102,8 +102,8 @@ fi
 log "Hardening /etc/ssh/sshd_config"
 sshd_set() {
     local key="$1" val="$2" file=/etc/ssh/sshd_config
-    if grep -qE "^[#[:space:]]*${key}[[:space:]]" "$file"; then
-        sed -ri "s|^[#[:space:]]*(${key})[[:space:]].*|\1 ${val}|" "$file"
+    if grep -qE "^[#[:space:]]*${key}[[:space:]]+" "$file"; then
+        sed -ri "s|^[#[:space:]]*(${key})[[:space:]]+.*|\1 ${val}|" "$file"
     else
         echo "${key} ${val}" >> "$file"
     fi
