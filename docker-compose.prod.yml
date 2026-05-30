@@ -27,15 +27,17 @@ services:
       redis:
         condition: service_healthy
     volumes: !override
-      # Uploads move from a host bind mount to a shared named volume so every
-      # WP replica writes to the same place. Themes / plugins / mu-plugins /
-      # wp-config.php keep their bind mounts but switch to read-only since
-      # prod ships code via image build, not host edits.
+      # Uploads bind-mount to the release's wp-content/uploads, which release.sh
+      # symlinks to /opt/shobjiwala/shared/uploads — a single host directory all
+      # WP replicas read/write. Keeping it on the host (vs a named volume)
+      # makes seeding (uploads.zip) and rsync backups straightforward.
+      # Themes / plugins / mu-plugins / wp-config.php are read-only in prod
+      # since code ships via image build, not host edits.
       - ./wp-config.php:/var/www/html/wp-config.php:ro
       - ./wp-content/themes:/var/www/html/wp-content/themes:ro
       - ./wp-content/plugins:/var/www/html/wp-content/plugins:ro
       - ./wp-content/mu-plugins:/var/www/html/wp-content/mu-plugins:ro
-      - wp_uploads:/var/www/html/wp-content/uploads
+      - ./wp-content/uploads:/var/www/html/wp-content/uploads
     deploy:
       replicas: 2
 
@@ -101,8 +103,6 @@ services:
       - db_backups:/backups
 
 volumes:
-  wp_uploads:
-    name: shobjiwala_wp_uploads
   redis_data:
     name: shobjiwala_redis_data
   db_backups:

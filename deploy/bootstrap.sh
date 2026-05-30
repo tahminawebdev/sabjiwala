@@ -14,7 +14,7 @@ set -euo pipefail
 
 APP_DIR=/opt/shobjiwala
 STATE_FILE="$APP_DIR/.bootstrap-version"
-BOOTSTRAP_VERSION=1
+BOOTSTRAP_VERSION=2
 
 log() { printf '[bootstrap] %s\n' "$*"; }
 
@@ -112,6 +112,9 @@ sshd_set PasswordAuthentication no
 sshd_set PermitRootLogin prohibit-password
 sshd_set KbdInteractiveAuthentication no
 sshd_set ChallengeResponseAuthentication no
+sshd_set MaxAuthTries 3
+sshd_set LoginGraceTime 30
+sshd_set AllowUsers "root deploy"
 sshd -t  # validate before reload
 systemctl reload ssh
 
@@ -136,12 +139,86 @@ systemctl enable --now fail2ban
 # --- 12. Timezone --------------------------------------------------------------
 timedatectl set-timezone UTC
 
-# --- 13. Docker smoke ----------------------------------------------------------
+# --- 13. Docker daemon hardening + log rotation -------------------------------
+# Cap container log growth (default json-file driver is unbounded) and turn on
+# live-restore so docker upgrades don't take the WP replicas down. ulimits keep
+# a single misbehaving container from exhausting host file descriptors.
+log "Writing /etc/docker/daemon.json"
+mkdir -p /etc/docker
+NEW_DAEMON_JSON=$(cat <<'JSON'
+{
+  "log-driver": "json-file",
+  "log-opts": {
+    "max-size": "10m",
+    "max-file": "5"
+  },
+  "live-restore": true,
+  "default-ulimits": {
+    "nofile": { "Name": "nofile", "Soft": 65536, "Hard": 65536 }
+  },
+  "no-new-privileges": true
+}
+JSON
+)
+if [ ! -f /etc/docker/daemon.json ] || ! diff -q /etc/docker/daemon.json <(printf '%s\n' "$NEW_DAEMON_JSON") >/dev/null 2>&1; then
+    printf '%s\n' "$NEW_DAEMON_JSON" > /etc/docker/daemon.json
+    chmod 644 /etc/docker/daemon.json
+    log "Restarting docker to pick up daemon.json"
+    systemctl restart docker
+else
+    log "daemon.json already current — skipping docker restart"
+fi
+
+# --- 14. sysctl hardening -----------------------------------------------------
+# Standard server-host hardening. Docker still gets net.ipv4.ip_forward=1 via
+# its own modprobe rules; we set it here too to be explicit.
+log "Installing /etc/sysctl.d/99-shobjiwala.conf"
+cat >/etc/sysctl.d/99-shobjiwala.conf <<'EOF'
+# SYN flood protection
+net.ipv4.tcp_syncookies = 1
+net.ipv4.tcp_max_syn_backlog = 2048
+# Spoofed-source / source-routing rejection
+net.ipv4.conf.all.rp_filter = 1
+net.ipv4.conf.default.rp_filter = 1
+net.ipv4.conf.all.accept_source_route = 0
+net.ipv4.conf.default.accept_source_route = 0
+net.ipv6.conf.all.accept_source_route = 0
+net.ipv6.conf.default.accept_source_route = 0
+# Don't trust ICMP redirects (defeats off-path MITM)
+net.ipv4.conf.all.accept_redirects = 0
+net.ipv4.conf.default.accept_redirects = 0
+net.ipv6.conf.all.accept_redirects = 0
+net.ipv6.conf.default.accept_redirects = 0
+net.ipv4.conf.all.secure_redirects = 0
+net.ipv4.conf.default.secure_redirects = 0
+# Log martian packets (useful for incident forensics)
+net.ipv4.conf.all.log_martians = 1
+# Ignore ICMP broadcasts (smurf)
+net.ipv4.icmp_echo_ignore_broadcasts = 1
+net.ipv4.icmp_ignore_bogus_error_responses = 1
+# Docker needs forwarding; keep ON
+net.ipv4.ip_forward = 1
+# A bit more file-descriptor headroom for nginx + WP replicas
+fs.file-max = 2097152
+EOF
+sysctl --system >/dev/null
+
+# --- 15. journald size cap ----------------------------------------------------
+log "Capping journald disk use at 500M"
+mkdir -p /etc/systemd/journald.conf.d
+cat >/etc/systemd/journald.conf.d/shobjiwala-size.conf <<'EOF'
+[Journal]
+SystemMaxUse=500M
+SystemKeepFree=1G
+EOF
+systemctl restart systemd-journald
+
+# --- 16. Docker smoke ---------------------------------------------------------
 docker info >/dev/null
 
-# --- 14. State -----------------------------------------------------------------
+# --- 17. State -----------------------------------------------------------------
 echo "$BOOTSTRAP_VERSION" > "$STATE_FILE"
 chown deploy:deploy "$STATE_FILE"
 
 log "Bootstrap complete (version $BOOTSTRAP_VERSION)."
-log "REMINDER: delete the BOOTSTRAP_SSH_KEY GitHub Secret now."
+log "REMINDER: delete the BOOTSTRAP_SSH_KEY GitHub Secret now (if it was used)."

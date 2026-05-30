@@ -59,6 +59,10 @@ readme.html
 # DB snapshots — actual dumps live on snapshot/<date> branches, not main.
 deploy/snapshots/*.sql.gz
 
+# Bulk media archives — staged out-of-band to /opt/shobjiwala/shared/uploads,
+# never tracked.
+/uploads.zip
+
 # Playwright artifacts
 /node_modules/
 /test-results/

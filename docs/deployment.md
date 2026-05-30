@@ -4,6 +4,15 @@ This repo ships to a production server via four manually-triggered GitHub
 Actions workflows. Everything is `workflow_dispatch` — nothing deploys on
 push.
 
+**Current target:** `root@84.247.167.97` (Ubuntu 24.04, 6 vCPU / 11 GB RAM /
+193 GB disk, IPv4-only). Migrated from `157.245.45.208` on 2026-05-30.
+
+**Uploads:** `wp-content/uploads/` is a **host bind mount** to
+`/opt/shobjiwala/shared/uploads` (the bootstrap script creates this dir).
+Earlier versions used a Docker named volume `shobjiwala_wp_uploads`; that
+was dropped so `uploads.zip`-style seeds and `rsync` backups work against
+the host filesystem directly.
+
 ## One-time setup
 
 ### 1. Generate the CI keypair (on your laptop)
@@ -18,11 +27,11 @@ cat ~/.ssh/shobjiwala_ci       # paste as SSH_PRIVATE_KEY secret
 
 | Secret              | Value                                                            |
 |---------------------|------------------------------------------------------------------|
-| `SERVER_HOST`       | `157.245.45.208` (today; updated on server migration)            |
+| `SERVER_HOST`       | `84.247.167.97` (today; updated on server migration)            |
 | `SSH_USER`          | `deploy`                                                         |
 | `SSH_PRIVATE_KEY`   | contents of `~/.ssh/shobjiwala_ci`                               |
 | `BOOTSTRAP_SSH_KEY` | private key DigitalOcean lets you SSH in as `root` with          |
-| `KNOWN_HOSTS`       | output of `ssh-keyscan -H 157.245.45.208`                        |
+| `KNOWN_HOSTS`       | output of `ssh-keyscan -H 84.247.167.97`                        |
 
 ### 3. Populate `/opt/shobjiwala/shared/.env` on the server
 
@@ -31,8 +40,8 @@ Before running deploy, the env file must exist on the server. From your laptop
 
 ```bash
 scp -i ~/.ssh/<your-root-key> .env.prod.example \
-    root@157.245.45.208:/opt/shobjiwala/shared/.env
-ssh root@157.245.45.208 \
+    root@84.247.167.97:/opt/shobjiwala/shared/.env
+ssh root@84.247.167.97 \
     'chown deploy:deploy /opt/shobjiwala/shared/.env \
      && chmod 600 /opt/shobjiwala/shared/.env'
 ```
@@ -102,7 +111,7 @@ GitHub Actions → "Deploy" → Run workflow → (optional ref) → Run
    - `confirm` = `OVERWRITE-PROD-DB`
    - `ref` = the snapshot branch
    - `old_url` = `http://localhost:8080` (default)
-   - `new_url` = `http://157.245.45.208` (default)
+   - `new_url` = `http://84.247.167.97` (default)
 
 > **REVIEWER NOTE (no checkpoint between dry-run and apply):** The workflow
 > runs the dry-run search-replace, then immediately runs the apply step.

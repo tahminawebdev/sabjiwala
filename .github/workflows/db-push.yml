@@ -15,7 +15,7 @@ on:
       new_url:
         description: "URL to rewrite to on the server"
         required: false
-        default: "http://157.245.45.208"
+        default: "http://84.247.167.97"
         type: string
       ref:
         description: "Branch holding the snapshot (e.g. snapshot/2026-05-22)"
