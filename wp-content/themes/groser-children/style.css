@@ -1,0 +1,1214 @@
+/*
+Theme Name: Groser Children
+Theme URI: https://example.com/groser-children
+Description: Sabjiwala Fresh Grocery Store — child theme for the Groser parent theme. Implements the full Sabjiwala storefront design: top bar, sticky header, category nav, hero section, trust badges, shop-by-category circles, fresh arrivals product grid, promo section, floating chat widget, and footer.
+Author: Sabjiwala
+Author URI: https://example.com
+Template: groser
+Version: 1.0.0
+License: GNU General Public License v2 or later
+License URI: http://www.gnu.org/licenses/gpl-2.0.html
+Text Domain: groser-children
+*/
+
+/* ============================================================
+   CSS Custom Properties — Sabjiwala colour palette
+   Ported from sabji-fresh-roots/src/index.css
+   ============================================================ */
+:root {
+    --sjw-primary:          #064217;
+    --sjw-primary-light:    #0a5c22;
+    --sjw-primary-bg:       #e8f5ec;
+    --sjw-primary-10:       rgba(6, 66, 23, 0.10);
+    --sjw-primary-20:       rgba(6, 66, 23, 0.20);
+    --sjw-accent:           hsl(28, 80%, 52%);
+    --sjw-accent-10:        hsla(28, 80%, 52%, 0.10);
+    --sjw-bg:               hsl(40, 33%, 96%);
+    --sjw-card:             #ffffff;
+    --sjw-foreground:       hsl(162, 38%, 17%);
+    --sjw-muted:            hsl(40, 20%, 92%);
+    --sjw-muted-fg:         hsl(162, 20%, 40%);
+    --sjw-border:           hsl(40, 20%, 88%);
+    --sjw-radius:           0.5rem;
+    --sjw-font-heading:     'Playfair Display', Georgia, serif;
+    --sjw-font-body:        'Inter', system-ui, sans-serif;
+    --sjw-shadow-sm:        0 1px 3px rgba(0,0,0,0.08);
+    --sjw-shadow-md:        0 4px 12px rgba(0,0,0,0.10);
+    --sjw-shadow-lg:        0 8px 24px rgba(0,0,0,0.12);
+    --sjw-shadow-primary:   0 8px 24px rgba(6, 66, 23, 0.20);
+    --sjw-shadow-accent:    0 8px 24px hsla(28, 80%, 52%, 0.20);
+}
+
+/* ============================================================
+   Google Fonts are enqueued via functions.php
+   ============================================================ */
+
+body {
+    background-color: var(--sjw-bg);
+    color: var(--sjw-foreground);
+    font-family: var(--sjw-font-body);
+}
+
+/* ============================================================
+   TOP BAR
+   ============================================================ */
+.sjw-topbar {
+    background-color: #064217;
+    color: #ffffff;
+    font-size: 0.75rem;
+}
+.sjw-topbar__inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0.5rem 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+.sjw-topbar__left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+.sjw-topbar__item {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+}
+.sjw-topbar__item svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+.sjw-topbar__right {
+    display: none;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.7rem;
+}
+.sjw-topbar__right a {
+    color: #ffffff;
+    text-decoration: none;
+}
+.sjw-topbar__right a:hover { text-decoration: underline; }
+.sjw-topbar__sep { opacity: 0.5; }
+@media (min-width: 768px) {
+    .sjw-topbar { font-size: 0.8125rem; }
+    .sjw-topbar__right { display: flex; }
+    .sjw-topbar__left { gap: 1.5rem; }
+}
+@media (max-width: 639px) {
+    .sjw-topbar__item--sm { display: none; }
+}
+@media (max-width: 767px) {
+    .sjw-topbar__item--md { display: none; }
+}
+@media (max-width: 1023px) {
+    .sjw-topbar__item--lg { display: none; }
+}
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.sjw-header {
+    background-color: var(--sjw-card);
+    border-bottom: 1px solid var(--sjw-border);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: var(--sjw-shadow-sm);
+}
+.sjw-header__inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.sjw-header__mobile-toggle {
+    display: flex;
+    padding: 0.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--sjw-foreground);
+}
+.sjw-header__mobile-toggle svg { width: 24px; height: 24px; }
+@media (min-width: 768px) {
+    .sjw-header__mobile-toggle { display: none; }
+}
+
+/* Logo */
+.sjw-header__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    flex-shrink: 0;
+}
+.sjw-header__logo-img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+}
+.sjw-header__logo-text { display: none; }
+.sjw-header__logo-title {
+    font-family: var(--sjw-font-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--sjw-foreground);
+    line-height: 1.2;
+    margin: 0;
+}
+.sjw-header__logo-sub {
+    font-size: 0.625rem;
+    color: var(--sjw-muted-fg);
+    margin: 0;
+    margin-top: -2px;
+}
+@media (min-width: 640px) {
+    .sjw-header__logo-text { display: block; }
+    .sjw-header__logo-img { width: 56px; height: 56px; }
+    .sjw-header__logo-title { font-size: 1.5rem; }
+    .sjw-header__logo-sub { font-size: 0.75rem; }
+}
+
+/* Search */
+.sjw-header__search {
+    flex: 1;
+    max-width: 36rem;
+    margin: 0 1rem;
+    display: none;
+    position: relative;
+}
+.sjw-header__search input {
+    width: 100%;
+    height: 2.75rem;
+    padding: 0 3rem 0 1rem;
+    border: 1px solid var(--sjw-border);
+    border-radius: var(--sjw-radius);
+    background-color: hsl(40, 33%, 96%);
+    font-size: 0.875rem;
+    font-family: var(--sjw-font-body);
+    color: var(--sjw-foreground);
+    outline: none;
+    transition: border-color 0.2s;
+}
+.sjw-header__search input:focus {
+    border-color: var(--sjw-primary);
+}
+.sjw-header__search-btn {
+    position: absolute;
+    right: 0.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 2rem;
+    height: 2rem;
+    background-color: var(--sjw-primary);
+    border: none;
+    border-radius: calc(var(--sjw-radius) - 2px);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.2s;
+}
+.sjw-header__search-btn:hover { background-color: var(--sjw-primary-light); }
+.sjw-header__search-btn svg { width: 16px; height: 16px; }
+@media (min-width: 768px) {
+    .sjw-header__search { display: block; }
+}
+
+/* Actions */
+.sjw-header__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-left: auto;
+}
+@media (min-width: 768px) {
+    .sjw-header__actions { gap: 1.25rem; }
+}
+.sjw-header__action-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--sjw-foreground);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+.sjw-header__action-btn:hover { color: var(--sjw-primary); }
+.sjw-header__action-btn svg { width: 20px; height: 20px; }
+.sjw-header__action-label {
+    font-size: 0.625rem;
+    display: none;
+    white-space: nowrap;
+}
+@media (min-width: 768px) {
+    .sjw-header__action-label { display: block; }
+}
+.sjw-header__cart-icon { position: relative; }
+.sjw-header__cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: var(--sjw-accent);
+    color: #ffffff;
+    font-size: 9px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+/* Mobile search bar (below header on mobile) */
+.sjw-header__mobile-search {
+    padding: 0 1rem 0.75rem;
+    display: block;
+    position: relative;
+}
+.sjw-header__mobile-search input {
+    width: 100%;
+    height: 2.5rem;
+    padding: 0 2.75rem 0 1rem;
+    border: 1px solid var(--sjw-border);
+    border-radius: var(--sjw-radius);
+    background-color: hsl(40, 33%, 96%);
+    font-size: 0.875rem;
+    font-family: var(--sjw-font-body);
+    color: var(--sjw-foreground);
+    outline: none;
+}
+.sjw-header__mobile-search input:focus { border-color: var(--sjw-primary); }
+.sjw-header__mobile-search-btn {
+    position: absolute;
+    right: 1.25rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1.75rem;
+    height: 1.75rem;
+    background-color: var(--sjw-primary);
+    border: none;
+    border-radius: calc(var(--sjw-radius) - 2px);
+    color: #fff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.sjw-header__mobile-search-btn svg { width: 14px; height: 14px; }
+@media (min-width: 768px) {
+    .sjw-header__mobile-search { display: none; }
+}
+
+/* ============================================================
+   CATEGORY NAV
+   ============================================================ */
+.sjw-cat-nav {
+    background-color: var(--sjw-card);
+    border-bottom: 1px solid var(--sjw-border);
+    overflow-x: auto;
+}
+.sjw-cat-nav__inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+.sjw-cat-nav__all-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: var(--sjw-primary);
+    color: #ffffff;
+    padding: 0.625rem 1rem;
+    border-radius: calc(var(--sjw-radius) - 1px);
+    border: none;
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    flex-shrink: 0;
+    text-decoration: none;
+    transition: background-color 0.2s;
+    font-family: var(--sjw-font-body);
+}
+.sjw-cat-nav__all-btn:hover { background-color: var(--sjw-primary-light); }
+.sjw-cat-nav__all-btn svg { width: 16px; height: 16px; }
+.sjw-cat-nav__all-label-short { display: inline; }
+.sjw-cat-nav__all-label-full { display: none; }
+@media (min-width: 640px) {
+    .sjw-cat-nav__all-label-short { display: none; }
+    .sjw-cat-nav__all-label-full { display: inline; }
+}
+.sjw-cat-nav__items {
+    display: flex;
+    align-items: center;
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+.sjw-cat-nav__items::-webkit-scrollbar { display: none; }
+.sjw-cat-nav__item {
+    padding: 0.625rem 0.75rem;
+    font-size: 0.875rem;
+    white-space: nowrap;
+    color: var(--sjw-foreground);
+    text-decoration: none;
+    transition: color 0.2s;
+    border-bottom: 2px solid transparent;
+    font-family: var(--sjw-font-body);
+    background: none;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    cursor: pointer;
+    display: block;
+}
+@media (min-width: 768px) {
+    .sjw-cat-nav__item { padding: 0.625rem 1rem; }
+}
+.sjw-cat-nav__item:hover,
+.sjw-cat-nav__item.is-active {
+    color: var(--sjw-primary);
+    border-bottom-color: var(--sjw-primary);
+    font-weight: 500;
+}
+.sjw-cat-nav__item--deals {
+    color: #dc2626;
+    font-weight: 600;
+}
+.sjw-cat-nav__item--deals:hover { color: #b91c1c; border-bottom-color: transparent; }
+.sjw-cat-nav__track-link {
+    margin-left: auto;
+    display: none;
+    align-items: center;
+    gap: 0.375rem;
+    font-size: 0.875rem;
+    color: var(--sjw-primary);
+    text-decoration: none;
+    flex-shrink: 0;
+    padding-left: 1rem;
+}
+.sjw-cat-nav__track-link:hover { text-decoration: underline; }
+.sjw-cat-nav__track-link svg { width: 16px; height: 16px; }
+@media (min-width: 1024px) {
+    .sjw-cat-nav__track-link { display: flex; }
+}
+
+/* ============================================================
+   HERO SECTION
+   ============================================================ */
+.sjw-hero {
+    background: linear-gradient(135deg, rgba(6,66,23,0.05) 0%, var(--sjw-bg) 50%, rgba(6,66,23,0.10) 100%);
+    position: relative;
+    overflow: hidden;
+}
+.sjw-hero__inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    align-items: center;
+}
+@media (min-width: 768px) {
+    .sjw-hero__inner { padding: 3rem 1rem; }
+}
+@media (min-width: 1024px) {
+    .sjw-hero__inner {
+        grid-template-columns: 1fr 1fr;
+        padding: 4rem 1rem;
+    }
+}
+.sjw-hero__title {
+    font-family: var(--sjw-font-heading);
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--sjw-foreground);
+    line-height: 1.2;
+    margin: 0 0 1rem;
+}
+.sjw-hero__title span { color: var(--sjw-primary); }
+@media (min-width: 768px) { .sjw-hero__title { font-size: 2.25rem; } }
+@media (min-width: 1024px) { .sjw-hero__title { font-size: 3rem; } }
+.sjw-hero__sub {
+    color: var(--sjw-muted-fg);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    margin: 0 0 1.5rem;
+}
+.sjw-hero__sub p { margin: 0.25rem 0; }
+.sjw-hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+.sjw-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    height: 2.75rem;
+    padding: 0 1.5rem;
+    border-radius: var(--sjw-radius);
+    font-size: 0.875rem;
+    font-weight: 500;
+    font-family: var(--sjw-font-body);
+    cursor: pointer;
+    text-decoration: none;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+}
+.sjw-btn svg { width: 16px; height: 16px; }
+.sjw-btn--primary {
+    background-color: var(--sjw-primary);
+    color: #ffffff;
+    box-shadow: var(--sjw-shadow-primary);
+    border-color: var(--sjw-primary);
+}
+.sjw-btn--primary:hover { background-color: var(--sjw-primary-light); border-color: var(--sjw-primary-light); color: #fff; }
+.sjw-btn--outline {
+    background-color: transparent;
+    color: var(--sjw-foreground);
+    border-color: var(--sjw-foreground);
+}
+.sjw-btn--outline:hover {
+    background-color: var(--sjw-foreground);
+    color: var(--sjw-bg);
+}
+.sjw-btn--accent {
+    background-color: var(--sjw-accent);
+    color: #ffffff;
+    box-shadow: var(--sjw-shadow-accent);
+    border-color: var(--sjw-accent);
+}
+.sjw-btn--accent:hover { background-color: hsl(28, 80%, 44%); }
+.sjw-hero__image {
+    display: flex;
+    justify-content: center;
+}
+.sjw-hero__image img {
+    width: 100%;
+    max-width: 28rem;
+    object-fit: contain;
+    filter: drop-shadow(0 20px 40px rgba(0,0,0,0.15));
+}
+@media (min-width: 1024px) { .sjw-hero__image img { max-width: 36rem; } }
+
+/* ============================================================
+   TRUST BADGES
+   ============================================================ */
+.sjw-trust {
+    border-top: 1px solid var(--sjw-border);
+    border-bottom: 1px solid var(--sjw-border);
+    background-color: var(--sjw-card);
+}
+.sjw-trust__inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem 1.5rem;
+}
+@media (min-width: 768px) {
+    .sjw-trust__inner { justify-content: space-between; gap: 1.5rem; }
+}
+.sjw-trust__item {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+}
+.sjw-trust__icon {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    background-color: var(--sjw-primary-10);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.sjw-trust__icon svg {
+    width: 16px;
+    height: 16px;
+    color: var(--sjw-primary);
+    stroke: var(--sjw-primary);
+}
+.sjw-trust__title {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--sjw-foreground);
+    line-height: 1.2;
+}
+.sjw-trust__sub {
+    font-size: 0.6875rem;
+    color: var(--sjw-muted-fg);
+}
+@media (min-width: 768px) {
+    .sjw-trust__title { font-size: 0.9375rem; }
+    .sjw-trust__sub { font-size: 0.75rem; }
+}
+
+/* ============================================================
+   SHOP BY CATEGORY
+   ============================================================ */
+.sjw-categories {
+    padding: 2.5rem 0;
+}
+@media (min-width: 768px) { .sjw-categories { padding: 3.5rem 0; } }
+.sjw-categories__inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+.sjw-section-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+.sjw-section-title {
+    font-family: var(--sjw-font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--sjw-foreground);
+    margin: 0 0 0.5rem;
+}
+@media (min-width: 768px) { .sjw-section-title { font-size: 1.875rem; } }
+.sjw-section-rule {
+    width: 3rem;
+    height: 4px;
+    background-color: var(--sjw-primary);
+    border-radius: 2px;
+    margin: 0 auto;
+}
+.sjw-categories__grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem 1.5rem;
+}
+@media (min-width: 768px) {
+    .sjw-categories__grid { grid-template-columns: repeat(8, 1fr); gap: 1.5rem; }
+}
+.sjw-cat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    cursor: pointer;
+}
+.sjw-cat-circle {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    background-color: var(--sjw-card);
+    border: 2px solid var(--sjw-border);
+    overflow: hidden;
+    padding: 0.5rem;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+@media (min-width: 768px) {
+    .sjw-cat-circle { width: 5rem; height: 5rem; }
+}
+.sjw-cat-item:hover .sjw-cat-circle {
+    border-color: var(--sjw-primary);
+    box-shadow: var(--sjw-shadow-md);
+}
+.sjw-cat-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    transition: transform 0.3s;
+}
+.sjw-cat-item:hover .sjw-cat-circle img { transform: scale(1.1); }
+.sjw-cat-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--sjw-foreground);
+    text-align: center;
+    line-height: 1.3;
+}
+@media (min-width: 768px) { .sjw-cat-label { font-size: 0.875rem; } }
+
+/* ============================================================
+   FRESH ARRIVALS / PRODUCT GRID
+   ============================================================ */
+.sjw-arrivals {
+    padding: 2.5rem 0;
+    background-color: hsla(40, 33%, 92%, 0.30);
+}
+@media (min-width: 768px) { .sjw-arrivals { padding: 3.5rem 0; } }
+.sjw-arrivals__inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+.sjw-arrivals__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+}
+.sjw-arrivals__title {
+    font-family: var(--sjw-font-heading);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--sjw-foreground);
+    margin: 0;
+}
+@media (min-width: 768px) { .sjw-arrivals__title { font-size: 1.875rem; } }
+.sjw-arrivals__link {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.875rem;
+    color: var(--sjw-primary);
+    font-weight: 500;
+    text-decoration: none;
+}
+.sjw-arrivals__link:hover { text-decoration: underline; }
+.sjw-arrivals__link svg { width: 16px; height: 16px; }
+.sjw-products-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+}
+@media (min-width: 640px)  { .sjw-products-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 768px)  { .sjw-products-grid { grid-template-columns: repeat(4, 1fr); gap: 1rem; } }
+@media (min-width: 1024px) { .sjw-products-grid { grid-template-columns: repeat(6, 1fr); } }
+
+/* Product card */
+.sjw-product-card {
+    background-color: var(--sjw-card);
+    border-radius: calc(var(--sjw-radius) * 1.5);
+    border: 1px solid var(--sjw-border);
+    overflow: hidden;
+    transition: box-shadow 0.3s, transform 0.3s;
+}
+.sjw-product-card:hover {
+    box-shadow: var(--sjw-shadow-lg);
+    transform: translateY(-4px);
+}
+.sjw-product-card__img-wrap {
+    position: relative;
+    padding: 0.75rem;
+}
+.sjw-product-card__badge {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    z-index: 1;
+    background-color: var(--sjw-primary);
+    color: #ffffff;
+    font-size: 9px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: calc(var(--sjw-radius) * 0.5);
+    letter-spacing: 0.05em;
+}
+.sjw-product-card__img-bg {
+    aspect-ratio: 1;
+    background-color: hsla(40, 33%, 96%, 0.5);
+    border-radius: var(--sjw-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    overflow: hidden;
+}
+.sjw-product-card__img-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    transition: transform 0.3s;
+}
+.sjw-product-card:hover .sjw-product-card__img-bg img { transform: scale(1.05); }
+.sjw-product-card__body {
+    padding: 0 0.75rem 0.75rem;
+}
+.sjw-product-card__name {
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--sjw-foreground);
+    line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin: 0 0 2px;
+}
+.sjw-product-card__weight {
+    font-size: 0.75rem;
+    color: var(--sjw-muted-fg);
+    margin: 0 0 0.5rem;
+}
+.sjw-product-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+.sjw-product-card__price {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--sjw-primary);
+}
+.sjw-product-card__add-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    height: 2rem;
+    padding: 0 0.75rem;
+    background-color: var(--sjw-primary);
+    color: #ffffff;
+    border: none;
+    border-radius: var(--sjw-radius);
+    font-size: 0.75rem;
+    font-family: var(--sjw-font-body);
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+.sjw-product-card__add-btn:hover { background-color: var(--sjw-primary-light); }
+.sjw-product-card__add-btn svg { width: 12px; height: 12px; }
+
+/* WooCommerce product loop override — map WC classes to our styles */
+.sjw-wc-grid ul.products {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+@media (min-width: 640px)  { .sjw-wc-grid ul.products { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 768px)  { .sjw-wc-grid ul.products { grid-template-columns: repeat(4, 1fr); gap: 1rem; } }
+@media (min-width: 1024px) { .sjw-wc-grid ul.products { grid-template-columns: repeat(6, 1fr); } }
+.sjw-wc-grid ul.products li.product {
+    background-color: var(--sjw-card);
+    border-radius: calc(var(--sjw-radius) * 1.5);
+    border: 1px solid var(--sjw-border);
+    overflow: hidden;
+    transition: box-shadow 0.3s, transform 0.3s;
+    margin: 0;
+}
+.sjw-wc-grid ul.products li.product:hover {
+    box-shadow: var(--sjw-shadow-lg);
+    transform: translateY(-4px);
+}
+.sjw-wc-grid ul.products li.product a img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: contain;
+    padding: 1rem;
+    background-color: hsla(40, 33%, 96%, 0.5);
+    transition: transform 0.3s;
+}
+.sjw-wc-grid ul.products li.product:hover a img { transform: scale(1.05); }
+.sjw-wc-grid ul.products li.product .woocommerce-loop-product__title {
+    font-weight: 500;
+    font-size: 0.875rem;
+    color: var(--sjw-foreground);
+    padding: 0.5rem 0.75rem 0;
+}
+.sjw-wc-grid ul.products li.product .price {
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: var(--sjw-primary);
+    padding: 0 0.75rem;
+    display: block;
+}
+.sjw-wc-grid ul.products li.product .button {
+    margin: 0.5rem 0.75rem 0.75rem;
+    display: block;
+    background-color: var(--sjw-primary);
+    color: #fff;
+    border-radius: var(--sjw-radius);
+    font-size: 0.75rem;
+    padding: 0.375rem 0.75rem;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.sjw-wc-grid ul.products li.product .button:hover { background-color: var(--sjw-primary-light); }
+
+/* ============================================================
+   PROMO SECTION
+   ============================================================ */
+.sjw-promo {
+    padding: 2.5rem 0;
+}
+@media (min-width: 768px) { .sjw-promo { padding: 3.5rem 0; } }
+.sjw-promo__inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+@media (min-width: 768px) {
+    .sjw-promo__inner { grid-template-columns: 1fr 1fr; }
+}
+.sjw-promo__box {
+    border-radius: calc(var(--sjw-radius) * 2);
+    padding: 1.5rem;
+    border: 1px solid;
+    position: relative;
+    overflow: hidden;
+}
+@media (min-width: 768px) { .sjw-promo__box { padding: 2rem; } }
+.sjw-promo__box--ai {
+    background: linear-gradient(135deg, var(--sjw-primary-10), var(--sjw-primary-bg));
+    border-color: rgba(6,66,23,0.20);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.sjw-promo__box--deals {
+    background: linear-gradient(135deg, var(--sjw-accent-10), hsla(28,80%,52%,0.05));
+    border-color: hsla(28,80%,52%,0.20);
+}
+.sjw-promo__tag {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+.sjw-promo__tag-icon {
+    width: 2rem;
+    height: 2rem;
+    background-color: var(--sjw-primary-20);
+    border-radius: var(--sjw-radius);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.sjw-promo__tag-icon svg { width: 20px; height: 20px; stroke: var(--sjw-primary); }
+.sjw-promo__tag-text {
+    font-size: 0.6875rem;
+    font-weight: 700;
+    color: var(--sjw-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.075em;
+}
+.sjw-promo__box--deals .sjw-promo__tag-icon { background-color: hsla(28,80%,52%,0.15); }
+.sjw-promo__box--deals .sjw-promo__tag-icon svg { stroke: var(--sjw-accent); }
+.sjw-promo__box--deals .sjw-promo__tag-text { color: var(--sjw-accent); }
+.sjw-promo__title {
+    font-family: var(--sjw-font-heading);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--sjw-foreground);
+    margin: 0 0 0.5rem;
+    line-height: 1.2;
+}
+@media (min-width: 768px) { .sjw-promo__title { font-size: 1.5rem; } }
+.sjw-promo__title--deals {
+    font-size: 2rem;
+    font-weight: 900;
+}
+@media (min-width: 768px) { .sjw-promo__title--deals { font-size: 2.5rem; } }
+.sjw-promo__sub {
+    font-size: 0.875rem;
+    color: var(--sjw-muted-fg);
+    margin: 0 0 1.25rem;
+}
+.sjw-promo__deals-sub {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--sjw-accent);
+    margin: 0.25rem 0 0;
+}
+.sjw-promo__img {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 10rem;
+    opacity: 0.80;
+    object-fit: contain;
+}
+@media (min-width: 768px) { .sjw-promo__img { width: 13rem; } }
+
+/* ============================================================
+   FOOTER
+   ============================================================ */
+.sjw-footer {
+    background-color: var(--sjw-card);
+    border-top: 1px solid var(--sjw-border);
+}
+.sjw-footer__badges {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 1.5rem 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+@media (min-width: 768px) {
+    .sjw-footer__badges { grid-template-columns: repeat(4, 1fr); }
+}
+.sjw-footer__badge {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+.sjw-footer__badge-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background-color: var(--sjw-primary-10);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.sjw-footer__badge-icon svg { width: 20px; height: 20px; stroke: var(--sjw-primary); }
+.sjw-footer__badge-title {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--sjw-foreground);
+}
+.sjw-footer__badge-sub {
+    font-size: 0.6875rem;
+    color: var(--sjw-muted-fg);
+}
+@media (min-width: 768px) {
+    .sjw-footer__badge-title { font-size: 0.9375rem; }
+    .sjw-footer__badge-sub { font-size: 0.75rem; }
+}
+.sjw-footer__copy {
+    border-top: 1px solid var(--sjw-border);
+    padding: 1rem;
+    text-align: center;
+    font-size: 0.75rem;
+    color: var(--sjw-muted-fg);
+}
+
+/* ============================================================
+   CHAT WIDGET
+   ============================================================ */
+.sjw-chat {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+    z-index: 9999;
+}
+.sjw-chat__toggle {
+    width: 3.5rem;
+    height: 3.5rem;
+    background-color: var(--sjw-primary);
+    color: #ffffff;
+    border: none;
+    border-radius: 50%;
+    box-shadow: var(--sjw-shadow-lg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+    position: relative;
+}
+.sjw-chat__toggle:hover {
+    background-color: var(--sjw-primary-light);
+    transform: scale(1.05);
+}
+.sjw-chat__toggle:active { transform: scale(0.95); }
+.sjw-chat__toggle svg { width: 24px; height: 24px; }
+.sjw-chat__badge {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 20px;
+    height: 20px;
+    background-color: var(--sjw-accent);
+    color: #ffffff;
+    border-radius: 50%;
+    font-size: 9px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.sjw-chat__hint {
+    text-align: center;
+    font-size: 0.6875rem;
+    color: var(--sjw-muted-fg);
+    margin-top: 0.375rem;
+}
+.sjw-chat__panel {
+    position: absolute;
+    bottom: calc(100% + 1rem);
+    right: 0;
+    width: 20rem;
+    background-color: var(--sjw-card);
+    border: 1px solid var(--sjw-border);
+    border-radius: calc(var(--sjw-radius) * 2);
+    box-shadow: var(--sjw-shadow-lg);
+    overflow: hidden;
+    display: none;
+}
+@media (min-width: 768px) { .sjw-chat__panel { width: 24rem; } }
+.sjw-chat__panel.is-open { display: block; }
+.sjw-chat__head {
+    background-color: var(--sjw-primary);
+    color: #ffffff;
+    padding: 1rem;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+.sjw-chat__head-name {
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin: 0;
+}
+.sjw-chat__head-sub {
+    font-size: 0.75rem;
+    opacity: 0.8;
+    margin: 2px 0 0;
+}
+.sjw-chat__close {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+.sjw-chat__close svg { width: 20px; height: 20px; }
+.sjw-chat__suggestions {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.sjw-chat__suggestion {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem 1rem;
+    border-radius: calc(var(--sjw-radius) * 1.5);
+    border: 1px solid var(--sjw-border);
+    background: none;
+    font-size: 0.875rem;
+    color: var(--sjw-foreground);
+    font-family: var(--sjw-font-body);
+    cursor: pointer;
+    text-align: left;
+    transition: border-color 0.2s, background-color 0.2s;
+}
+.sjw-chat__suggestion:hover {
+    border-color: var(--sjw-primary);
+    background-color: var(--sjw-primary-10);
+}
+.sjw-chat__suggestion svg { width: 16px; height: 16px; stroke: var(--sjw-primary); flex-shrink: 0; }
+.sjw-chat__input-area {
+    padding: 0.75rem;
+    border-top: 1px solid var(--sjw-border);
+}
+.sjw-chat__input-row {
+    display: flex;
+    gap: 0.5rem;
+}
+.sjw-chat__input-row input {
+    flex: 1;
+    height: 2.25rem;
+    padding: 0 0.75rem;
+    border: 1px solid var(--sjw-border);
+    border-radius: var(--sjw-radius);
+    font-size: 0.875rem;
+    font-family: var(--sjw-font-body);
+    color: var(--sjw-foreground);
+    outline: none;
+    background-color: var(--sjw-bg);
+}
+.sjw-chat__input-row input:focus { border-color: var(--sjw-primary); }
+.sjw-chat__send {
+    width: 2.25rem;
+    height: 2.25rem;
+    background-color: var(--sjw-primary);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background-color 0.2s;
+}
+.sjw-chat__send:hover { background-color: var(--sjw-primary-light); }
+.sjw-chat__send svg { width: 16px; height: 16px; }
+.sjw-chat__powered {
+    font-size: 0.625rem;
+    color: var(--sjw-muted-fg);
+    text-align: center;
+    margin-top: 0.5rem;
+}
+
+/* ============================================================
+   Groser-child inherited styles (SKU/meta overrides)
+   ============================================================ */
+.shop-categories-section {
+    padding: 30px 0 50px;
+    background: #fff;
+}
+.shop-categories-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 15px;
+}
+.categories-title { font-size: 18px; font-weight: 600; color: #333; margin: 0; }
+.category-nav-arrows { display: flex; gap: 8px; }
+.cat-nav-btn {
+    width: 32px; height: 32px;
+    border: 1px solid #ddd; border-radius: 4px; background: #fff;
+    cursor: pointer; font-size: 14px; color: #666; transition: all 0.2s ease;
+}
+.cat-nav-btn:hover { background: #f5f5f5; color: #333; }
+.product-categories-row {
+    display: flex; justify-content: space-between;
+    align-items: flex-start; flex-wrap: wrap; gap: 15px;
+}
+.category-item { flex: 1; min-width: 100px; max-width: 140px; text-align: center; }
+.category-item a { display: block; text-decoration: none; }
+.category-circle {
+    width: 110px; height: 110px; margin: 0 auto 12px;
+    border-radius: 50%; background: #f5f5f5; overflow: hidden; transition: all 0.3s ease;
+}
+.category-item:hover .category-circle { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+.category-circle img { width: 100%; height: 100%; object-fit: cover; }
+.category-name { font-size: 13px; color: #555; margin: 0; font-weight: 400; }
+.category-item:hover .category-name { color: #333; }
+.no-categories { text-align: center; padding: 40px; color: #666; width: 100%; }
+@media (max-width: 991px) { .category-circle { width: 85px; height: 85px; } .category-item { min-width: 80px; max-width: 120px; } }
+@media (max-width: 767px) { .product-categories-row { justify-content: center; } .category-circle { width: 75px; height: 75px; } .category-name { font-size: 12px; } }
+@media (max-width: 480px) { .shop-categories-header { flex-direction: column; align-items: flex-start; gap: 10px; } .category-item { min-width: 70px; max-width: 100px; } .category-circle { width: 65px; height: 65px; } }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: hsl(40, 33%, 96%); }
+::-webkit-scrollbar-thumb { background: var(--sjw-primary); border-radius: 4px; }
+html { scroll-behavior: smooth; }
