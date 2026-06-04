@@ -57,6 +57,9 @@ body {
     color: #ffffff;
     font-size: 0.75rem;
 }
+.sjw-topbar * {
+    color: #ffffff;
+}
 .sjw-topbar__inner {
     max-width: 1280px;
     margin: 0 auto;
@@ -66,6 +69,7 @@ body {
     align-items: center;
     justify-content: space-between;
     gap: 0.5rem;
+    color: #ffffff;
 }
 .sjw-topbar__left {
     display: flex;
@@ -88,6 +92,10 @@ body {
     align-items: center;
     gap: 1rem;
     font-size: 0.7rem;
+}
+.sjw-topbar__inner a {
+    color: #ffffff;
+    text-decoration: none;
 }
 .sjw-topbar__right a {
     color: #ffffff;
@@ -150,9 +158,11 @@ body {
     text-decoration: none;
     flex-shrink: 0;
 }
-.sjw-header__logo-img {
-    width: 48px;
-    height: 48px;
+.sjw-header__logo-img,
+.sjw-header__logo .custom-logo,
+.custom-logo-link .custom-logo {
+    width: 120px !important;
+    height: 120px !important;
     border-radius: 50%;
     object-fit: cover;
 }
@@ -173,7 +183,9 @@ body {
 }
 @media (min-width: 640px) {
     .sjw-header__logo-text { display: block; }
-    .sjw-header__logo-img { width: 56px; height: 56px; }
+    .sjw-header__logo-img,
+    .sjw-header__logo .custom-logo,
+    .custom-logo-link .custom-logo { width: 120px !important; height: 120px !important; }
     .sjw-header__logo-title { font-size: 1.5rem; }
     .sjw-header__logo-sub { font-size: 0.75rem; }
 }
@@ -335,7 +347,7 @@ body {
     align-items: center;
     gap: 0.5rem;
     background-color: var(--sjw-primary);
-    color: #ffffff;
+    color: #ffffff !important;
     padding: 0.625rem 1rem;
     border-radius: calc(var(--sjw-radius) - 1px);
     border: none;
@@ -347,10 +359,10 @@ body {
     transition: background-color 0.2s;
     font-family: var(--sjw-font-body);
 }
-.sjw-cat-nav__all-btn:hover { background-color: var(--sjw-primary-light); }
-.sjw-cat-nav__all-btn svg { width: 16px; height: 16px; }
+.sjw-cat-nav__all-btn:hover { background-color: var(--sjw-primary-light); color: #ffffff !important; }
+.sjw-cat-nav__all-btn svg { width: 16px; height: 16px; stroke: #ffffff !important; color: #ffffff !important; }
 .sjw-cat-nav__all-label-short { display: inline; }
-.sjw-cat-nav__all-label-full { display: none; }
+.sjw-cat-nav__all-label-full { display: none; color: #ffffff !important; }
 @media (min-width: 640px) {
     .sjw-cat-nav__all-label-short { display: none; }
     .sjw-cat-nav__all-label-full { display: inline; }
@@ -413,26 +425,25 @@ body {
    HERO SECTION
    ============================================================ */
 .sjw-hero {
-    background: linear-gradient(135deg, rgba(6,66,23,0.05) 0%, var(--sjw-bg) 50%, rgba(6,66,23,0.10) 100%);
-    position: relative;
-    overflow: hidden;
+    width: 100%;
 }
-.sjw-hero__inner {
-    max-width: 1280px;
+.sjw-hero .depicter-1 {
     margin: 0 auto;
-    padding: 2rem 1rem;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 2rem;
-    align-items: center;
 }
-@media (min-width: 768px) {
-    .sjw-hero__inner { padding: 3rem 1rem; }
+#depicter-1-element-4,
+.depicter-revert .depicter-1-element-4,
+.depicter-1-element-4 {
+    color: #16301E !important;
+    font-size: 40px !important;
+    text-align: left !important;
+    font-family: "Inter" !important;
+    font-weight: 100 !important;
+    line-height: 120% !important;
+    text-transform: capitalize !important;
 }
-@media (min-width: 1024px) {
-    .sjw-hero__inner {
-        grid-template-columns: 1fr 1fr;
-        padding: 4rem 1rem;
+@media (max-width: 768px) {
+    .depicter-1-element-4 {
+        font-size: 28px !important;
     }
 }
 .sjw-hero__title {
