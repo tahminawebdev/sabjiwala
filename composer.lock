@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7a2d4bf082cfa4412ef08d847c146e6e",
+    "content-hash": "e2c05752a7d9558a0bd352164e24ff20",
     "packages": [
         {
             "name": "composer/installers",
@@ -223,6 +223,24 @@
             },
             "type": "wordpress-plugin",
             "homepage": "https://wordpress.org/plugins/contact-form-7/"
+        },
+        {
+            "name": "wpackagist-plugin/depicter",
+            "version": "4.7.1",
+            "source": {
+                "type": "svn",
+                "url": "https://plugins.svn.wordpress.org/depicter/",
+                "reference": "tags/4.7.1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://downloads.wordpress.org/plugin/depicter.4.7.1.zip"
+            },
+            "require": {
+                "composer/installers": "^1.0 || ^2.0"
+            },
+            "type": "wordpress-plugin",
+            "homepage": "https://wordpress.org/plugins/depicter/"
         },
         {
             "name": "wpackagist-plugin/duplicate-attribute",

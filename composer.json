@@ -29,6 +29,7 @@
         "wpackagist-plugin/akismet": "*",
         "wpackagist-plugin/breadcrumb-navxt": "*",
         "wpackagist-plugin/contact-form-7": "*",
+        "wpackagist-plugin/depicter": "*",
         "wpackagist-plugin/duplicate-attribute": "*",
         "wpackagist-plugin/duplicate-page": "*",
         "wpackagist-plugin/duplicator": "*",
