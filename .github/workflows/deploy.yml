@@ -38,6 +38,11 @@ jobs:
           coverage: none
 
       - name: Composer install (no dev)
+        env:
+          # ACF Pro: connect.advancedcustomfields.com requires HTTP Basic with
+          # the license key as username and the licensed site URL as password.
+          COMPOSER_AUTH: >-
+            {"http-basic":{"connect.advancedcustomfields.com":{"username":"${{ secrets.ACF_PRO_KEY }}","password":"http://84.247.167.97"}}}
         run: composer install --no-dev --prefer-dist --no-progress --no-interaction --optimize-autoloader
 
       - name: Stage build artifact

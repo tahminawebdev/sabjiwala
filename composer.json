@@ -13,6 +13,13 @@
                 "wpackagist-plugin/*",
                 "wpackagist-theme/*"
             ]
+        },
+        {
+            "type": "composer",
+            "url": "https://connect.advancedcustomfields.com",
+            "only": [
+                "wpengine/advanced-custom-fields-pro"
+            ]
         }
     ],
     "require": {
@@ -43,7 +50,8 @@
         "wpackagist-plugin/woocommerce-gateway-stripe": "*",
         "wpackagist-plugin/woocommerce-paypal-payments": "*",
         "wpackagist-plugin/wordpress-seo": "*",
-        "wpackagist-plugin/wpforms-lite": "*"
+        "wpackagist-plugin/wpforms-lite": "*",
+        "wpengine/advanced-custom-fields-pro": "*"
     },
     "require-dev": {
         "wp-cli/wp-cli-bundle": "^2.10",
