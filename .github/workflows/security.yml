@@ -40,7 +40,9 @@ jobs:
           restore-keys: ${{ runner.os }}-php8.3-composer-
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-interaction
+        uses: ./.github/actions/composer-install
+        with:
+          acf-pro-key: ${{ secrets.ACF_PRO_KEY }}
 
       - name: Audit composer dependencies
         run: composer audit --abandoned=report --no-cache
@@ -73,7 +75,9 @@ jobs:
           restore-keys: ${{ runner.os }}-php8.3-composer-
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-interaction
+        uses: ./.github/actions/composer-install
+        with:
+          acf-pro-key: ${{ secrets.ACF_PRO_KEY }}
 
       - name: Run PHPCS security ruleset
         run: vendor/bin/phpcs --standard=phpcs-security.xml.dist --report=checkstyle --report-file=phpcs-security-report.xml; cat phpcs-security-report.xml | cs2pr
@@ -115,7 +119,9 @@ jobs:
           restore-keys: ${{ runner.os }}-php8.3-composer-
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-interaction
+        uses: ./.github/actions/composer-install
+        with:
+          acf-pro-key: ${{ secrets.ACF_PRO_KEY }}
 
       - name: Run PHPCS security ruleset against parent theme
         run: vendor/bin/phpcs --standard=phpcs-security-vendor.xml.dist --report=checkstyle --report-file=phpcs-security-vendor-report.xml || true

@@ -1,0 +1,33 @@
+name: 'Composer install with ACF Pro auth'
+description: >-
+  Configures HTTP Basic auth for connect.advancedcustomfields.com using the
+  ACF_PRO_KEY repository secret, then runs `composer install`. Use this in
+  every workflow that installs composer deps — otherwise the ACF Pro
+  download 401s.
+
+inputs:
+  acf-pro-key:
+    description: 'ACF Pro license key (pass `${{ secrets.ACF_PRO_KEY }}`)'
+    required: true
+  args:
+    description: 'Extra flags appended to `composer install`'
+    required: false
+    default: ''
+
+runs:
+  using: composite
+  steps:
+    - name: Configure ACF Pro auth
+      shell: bash
+      env:
+        ACF_PRO_KEY: ${{ inputs.acf-pro-key }}
+      run: |
+        # connect.advancedcustomfields.com requires HTTP Basic: license key
+        # as username, licensed site URL as password (developer licenses
+        # accept any URL — we use the prod host).
+        composer config --auth http-basic.connect.advancedcustomfields.com \
+          "$ACF_PRO_KEY" "http://84.247.167.97"
+
+    - name: Composer install
+      shell: bash
+      run: composer install --prefer-dist --no-progress --no-interaction ${{ inputs.args }}

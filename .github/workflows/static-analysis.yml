@@ -52,7 +52,9 @@ jobs:
           restore-keys: ${{ runner.os }}-php8.3-composer-
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-interaction
+        uses: ./.github/actions/composer-install
+        with:
+          acf-pro-key: ${{ secrets.ACF_PRO_KEY }}
 
       - name: Cache PHPStan result
         uses: actions/cache@v4

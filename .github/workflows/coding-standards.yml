@@ -52,7 +52,9 @@ jobs:
           restore-keys: ${{ runner.os }}-php8.3-composer-
 
       - name: Install dependencies
-        run: composer install --prefer-dist --no-progress --no-interaction
+        uses: ./.github/actions/composer-install
+        with:
+          acf-pro-key: ${{ secrets.ACF_PRO_KEY }}
 
       - name: Run PHPCS (annotates the PR via cs2pr)
         run: vendor/bin/phpcs --report=checkstyle --report-file=phpcs-report.xml; cat phpcs-report.xml | cs2pr
