@@ -7,7 +7,7 @@ description: >-
 
 inputs:
   acf-pro-key:
-    description: 'ACF Pro license key (pass `${{ secrets.ACF_PRO_KEY }}`)'
+    description: 'ACF Pro license key from the ACF_PRO_KEY repository secret'
     required: true
   args:
     description: 'Extra flags appended to `composer install`'
