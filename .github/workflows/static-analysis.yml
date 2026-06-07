@@ -9,6 +9,7 @@ on:
       - 'phpstan.neon.dist'
       - 'phpstan-bootstrap.php'
       - '.github/workflows/static-analysis.yml'
+      - '.github/actions/composer-install/**'
   push:
     branches: [main]
     paths:
@@ -18,6 +19,7 @@ on:
       - 'phpstan.neon.dist'
       - 'phpstan-bootstrap.php'
       - '.github/workflows/static-analysis.yml'
+      - '.github/actions/composer-install/**'
 
 permissions:
   contents: read

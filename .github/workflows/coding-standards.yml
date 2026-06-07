@@ -8,6 +8,7 @@ on:
       - 'composer.lock'
       - 'phpcs.xml.dist'
       - '.github/workflows/coding-standards.yml'
+      - '.github/actions/composer-install/**'
   push:
     branches: [main]
     paths:
@@ -16,6 +17,7 @@ on:
       - 'composer.lock'
       - 'phpcs.xml.dist'
       - '.github/workflows/coding-standards.yml'
+      - '.github/actions/composer-install/**'
 
 permissions:
   contents: read
