@@ -810,7 +810,10 @@ body {
 @media (min-width: 640px)  { .sjw-wc-grid ul.products { grid-template-columns: repeat(3, 1fr); } }
 @media (min-width: 768px)  { .sjw-wc-grid ul.products { grid-template-columns: repeat(4, 1fr); gap: 1rem; } }
 @media (min-width: 1024px) { .sjw-wc-grid ul.products { grid-template-columns: repeat(6, 1fr); } }
+.woocommerce ul.products li.product,
+.woocommerce-page ul.products li.product,
 .sjw-wc-grid ul.products li.product {
+    width: 100% !important;
     background-color: var(--sjw-card);
     border-radius: calc(var(--sjw-radius) * 1.5);
     border: 1px solid var(--sjw-border);
@@ -1223,3 +1226,179 @@ body {
 ::-webkit-scrollbar-track { background: hsl(40, 33%, 96%); }
 ::-webkit-scrollbar-thumb { background: var(--sjw-primary); border-radius: 4px; }
 html { scroll-behavior: smooth; }
+
+/* ============================================================
+   Shop / Category archive layout
+   ============================================================ */
+
+.sjw-archive-wrap {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+/* Sub-category product count badge */
+.sjw-cat-count {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--sjw-muted-fg);
+    margin-top: 2px;
+}
+
+/* Category description */
+.sjw-cat-description {
+    color: var(--sjw-muted-fg);
+    margin-bottom: 1.5rem;
+    font-size: 0.9375rem;
+}
+.sjw-cat-description-wrap {
+    margin-bottom: 1rem;
+    color: var(--sjw-muted-fg);
+}
+
+/* Toolbar (result count + ordering) */
+.sjw-shop-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+/* ============================================================
+   Category hero banner
+   ============================================================ */
+
+.sjw-cat-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f5f0e8;
+    border-radius: 1rem;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    min-height: 200px;
+}
+
+.sjw-cat-banner__text {
+    flex: 1 1 55%;
+    padding: 2.5rem 2rem 2.5rem 2.5rem;
+}
+
+.sjw-cat-banner__title {
+    font-family: var(--sjw-font-heading);
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1.15;
+    color: #111;
+    margin: 0 0 0.75rem;
+    letter-spacing: -0.01em;
+}
+
+.sjw-cat-banner__desc {
+    font-size: 0.9375rem;
+    color: #555;
+    margin: 0;
+    line-height: 1.6;
+    max-width: 36ch;
+}
+
+.sjw-cat-banner__img-wrap {
+    flex: 0 0 40%;
+    max-width: 40%;
+    align-self: stretch;
+    overflow: hidden;
+}
+
+.sjw-cat-banner__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+@media (max-width: 640px) {
+    .sjw-cat-banner {
+        flex-direction: column-reverse;
+        min-height: unset;
+    }
+    .sjw-cat-banner__img-wrap {
+        flex: 0 0 auto;
+        max-width: 100%;
+        width: 100%;
+        max-height: 220px;
+    }
+    .sjw-cat-banner__text {
+        padding: 1.5rem 1.25rem;
+    }
+    .sjw-cat-banner__title {
+        font-size: 1.5rem;
+    }
+}
+
+/* Add to Cart button on product loop cards */
+.sjw-loop-atc {
+    padding: 0 0.75rem 0.75rem;
+}
+
+.sjw-loop-atc .sjw-atc-btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background-color: var(--sjw-primary);
+    color: #fff !important;
+    border: none;
+    border-radius: var(--sjw-radius);
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    text-decoration: none;
+}
+
+.sjw-loop-atc .sjw-atc-btn:hover {
+    background-color: var(--sjw-primary-light);
+    color: #fff !important;
+}
+
+.sjw-loop-atc .sjw-atc-btn.added {
+    background-color: var(--sjw-primary-light);
+}
+
+/* Hide short description on archive/category pages */
+.woocommerce ul.products li.product .woocommerce-product-details__short-description,
+.woocommerce-page ul.products li.product .woocommerce-product-details__short-description {
+    display: none !important;
+}
+
+/* Sidebar + product grid flex layout */
+.sjw-shop-area {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+}
+
+.sjw-shop-sidebar {
+    flex: 0 0 240px;
+    max-width: 240px;
+}
+
+.sjw-wc-grid {
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.sjw-wc-grid:not(.has-sidebar) {
+    flex-basis: 100%;
+}
+
+@media (max-width: 767px) {
+    .sjw-shop-area {
+        flex-direction: column;
+    }
+    .sjw-shop-sidebar {
+        flex: 0 0 auto;
+        max-width: 100%;
+        width: 100%;
+    }
+}
